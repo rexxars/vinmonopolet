@@ -9,7 +9,12 @@ var categoryParser = require('./lib/parsers/category-parser'),
     searchParser   = require('./lib/parsers/search-parser');
 
 function pageRequest(url, parser, callback) {
-    request(url, function(err, res, body) {
+    request({
+        url: url,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.132 Safari/537.36'
+        }
+    }, function(err, res, body) {
         if (err || res.statusCode !== 200) {
             return setImmediate(callback, err || res.statusCode);
         }
@@ -42,6 +47,10 @@ _.extend(Vinmonopolet, {
             productParser,
             callback
         );
+    },
+
+    getProductsByCategoryName: function(name, callback) {
+        Vinmonopolet.getProductsByFilters({ 25: name }, callback);
     },
 
     getProductsByFilters: function(filters, callback) {
