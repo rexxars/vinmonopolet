@@ -1,37 +1,45 @@
 'use strict';
 
-var cheerio    = require('cheerio'),
-    request    = require('request'),
-    async      = require('async'),
-    metaMap    = require('./lib/meta-map'),
-    priceFix   = require('./lib/price-normalizer'),
-    charFix    = require('./lib/characteristics-extractor'),
-    contentFix = require('./lib/content-extractor'),
-    amountFix  = function(amount) { return amount.replace(/\s+/, ' '); },
-    _          = require('lodash');
+var request = require('request'),
+    async   = require('async'),
+    _       = require('lodash');
 
-var ProductCrawler = function() {};
+var categoryParser = require('./lib/parsers/category-parser'),
+    productParser  = require('./lib/parsers/product-parser'),
+    searchParser   = require('./lib/parsers/search-parser');
 
-ProductCrawler.OVERVIEW_URL = 'http://www.vinmonopolet.no/vareutvalg/';
-ProductCrawler.SEARCH_URL   = 'http://www.vinmonopolet.no/vareutvalg/sok';
-ProductCrawler.PRODUCT_URL  = 'http://www.vinmonopolet.no/vareutvalg/vare/sku-';
-ProductCrawler.PRODUCT_QUERY_PARAMS = '?ShowShopsWithProdInStock=true&sku=504201&fylke_id=*';
-ProductCrawler.SEARCH_DEFAULT_PARAMETERS = {
-    query: '*',
-    sort: 2,
-    sortMode: 0
-};
+function pageRequest(url, parser, callback) {
+    request(url, function(err, res, body) {
+        if (err || res.statusCode !== 200) {
+            return setImmediate(callback, err || res.statusCode);
+        }
 
-_.extend(ProductCrawler.prototype, {
+        parser(body, callback);
+    });
+}
+
+var Vinmonopolet = {};
+
+_.extend(Vinmonopolet, {
+
+    OVERVIEW_URL: 'http://www.vinmonopolet.no/vareutvalg/',
+    SEARCH_URL: 'http://www.vinmonopolet.no/vareutvalg/sok',
+    PRODUCT_URL: 'http://www.vinmonopolet.no/vareutvalg/vare/sku-',
+    PRODUCT_QUERY_PARAMS: '?ShowShopsWithProdInStock=true&sku=504201&fylke_id=*',
+    SEARCH_DEFAULT_PARAMETERS: {
+        query: '*',
+        sort: 2,
+        sortMode: 0
+    },
 
     getCategories: function(callback) {
-        this.request(ProductCrawler.OVERVIEW_URL, this.categoryParser, callback);
+        pageRequest(Vinmonopolet.OVERVIEW_URL, categoryParser, callback);
     },
 
     getProductDetails: function(productSku, callback) {
-        this.request(
-            ProductCrawler.PRODUCT_URL + productSku + ProductCrawler.PRODUCT_QUERY_PARAMS,
-            this.productParser,
+        pageRequest(
+            Vinmonopolet.PRODUCT_URL + productSku + Vinmonopolet.PRODUCT_QUERY_PARAMS,
+            productParser,
             callback
         );
     },
@@ -44,7 +52,7 @@ _.extend(ProductCrawler.prototype, {
         async.doWhilst(
             function(next) {
                 page++;
-                this.searchProducts(filters, page, function(err, products, options) {
+                Vinmonopolet.searchProducts(filters, page, function(err, products, options) {
                     if (err) { return callback(err); }
 
                     allProducts = allProducts.concat(products);
@@ -52,7 +60,7 @@ _.extend(ProductCrawler.prototype, {
 
                     next();
                 });
-            }.bind(this),
+            },
             function() { return lastPage === false; },
             function(err) { callback(err, allProducts); }
         );
@@ -67,7 +75,7 @@ _.extend(ProductCrawler.prototype, {
 
         query = _.extend(
             query,
-            ProductCrawler.SEARCH_DEFAULT_PARAMETERS,
+            Vinmonopolet.SEARCH_DEFAULT_PARAMETERS,
             {
                 filterIds: filterIds.join(';'),
                 filterValues: filterValues.join(';')
@@ -81,107 +89,13 @@ _.extend(ProductCrawler.prototype, {
 
         qs.push('page=' + page);
 
-        this.request(
-            ProductCrawler.SEARCH_URL + '?' + qs.join('&'),
-            this.searchParser,
+        pageRequest(
+            Vinmonopolet.SEARCH_URL + '?' + qs.join('&'),
+            searchParser,
             callback
         );
-    },
-
-    categoryParser: function(body, callback) {
-        var $ = cheerio.load(body),
-            categories = [],
-            link;
-
-        $('h3.title em').each(function() {
-            link = $(this).closest('h3.title').find('a');
-            categories.push({
-                title: link.text().trim(),
-                count: parseInt($(this).text().replace(/[^\d]/g, ''), 10),
-                filterId: parseInt(link.attr('href').replace(/.*?filterIds=(\d+).*?/, '$1'), 10)
-            });
-        });
-
-        callback(categories.length ? undefined : 'No categories found', categories);
-    },
-
-    searchParser: function(body, callback) {
-        var $ = cheerio.load(body),
-            list = $('#productList tbody'),
-            products = [],
-            lastPage = false,
-            row, link, priceEl;
-
-        list.find('tr').each(function() {
-            row = $(this);
-            link = row.find('h3 a');
-            priceEl = row.find('td.price');
-
-            products.push({
-                sku: parseInt(link.attr('href').replace(/.*?sku-(\d+).*?/, '$1'), 10),
-                title: row.find('h3 a').text().trim(),
-                containerSize: amountFix(priceEl.find('h3 em').text().trim().replace(/^\(|\)$/g, '')),
-                price: priceFix(priceEl.find('h3 strong').text()),
-                pricePerLiter: priceFix(priceEl.find('p').text())
-            });
-        });
-
-        // See if we're on the last page
-        lastPage = $('table.pages td').last().children().last().is('a') === false;
-
-        callback(undefined, products, { isLastPage: lastPage });
-    },
-
-    productParser: function(body, callback) {
-        var $ = cheerio.load(body),
-            priceEl = $('#addToCart');
-
-        var productInfo = {
-            sku: parseInt($('input[name="sku"]').val(), 10),
-            title: $('.pageBody h1').first().text().trim(),
-            containerSize: amountFix(priceEl.find('h3 em').text().trim().replace(/^\(|\)$/g, '')),
-            price: priceFix(priceEl.find('h3 strong').text()),
-            pricePerLiter: priceFix(priceEl.find('p').text())
-        };
-
-        // Get meta-info
-        $('.productData li').each(function() {
-            var li     = $(this),
-                attrib = li.find('.attrib').text().replace(/:$/, '').replace(/\s+/g, ' '),
-                value  = li.find('span.data').text().replace(/\s+/, ' ').trim();
-
-            if (metaMap[attrib]) {
-                productInfo[metaMap[attrib]] = value;
-            } else if (attrib === 'Karakteristikk') {
-                _.extend(productInfo, charFix(li, $));
-            } else if (attrib === 'Innhold') {
-                _.extend(productInfo, contentFix(li, $));
-            } else if (attrib === 'Passer til') {
-                var pairings = [];
-                li.find('img').each(function() {
-                    pairings.push($(this).attr('title'));
-                });
-                productInfo.foodPairings = pairings.join(', ');
-            } else if (metaMap[attrib] === false) {
-                // Skip without warning
-            } else {
-                console.log('Unknown property: ' + attrib);
-            }
-        });
-
-        callback(undefined, productInfo);
-    },
-
-    request: function(url, parser, callback) {
-        request(url, function(err, res, body) {
-            if (err || res.statusCode !== 200) {
-                return setImmediate(callback, err || res.statusCode);
-            }
-
-            parser(body, callback);
-        });
     }
 
 });
 
-module.exports = ProductCrawler;
+module.exports = Vinmonopolet;

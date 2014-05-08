@@ -3,24 +3,23 @@
 var redtape = require('redtape');
 var fs = require('fs');
 var nock = require('nock');
-var ProductCrawler = require('../');
+var vinmonopolet = require('../');
 var domain = 'http://www.vinmonopolet.no';
 
-var overviewPath = ProductCrawler.OVERVIEW_URL.replace(domain, '');
+var overviewPath = vinmonopolet.OVERVIEW_URL.replace(domain, '');
 var overviewResponse = fs.readFileSync(__dirname + '/fixtures/overview-response.html', { encoding: 'utf8' });
 
-var searchPath = ProductCrawler.SEARCH_URL.replace(domain, '');
+var searchPath = vinmonopolet.SEARCH_URL.replace(domain, '');
 var searchResponse1 = fs.readFileSync(__dirname + '/fixtures/search-response-1.html', { encoding: 'utf8' });
 var searchResponse2 = fs.readFileSync(__dirname + '/fixtures/search-response-2.html', { encoding: 'utf8' });
 
-var productPath = ProductCrawler.PRODUCT_URL.replace(domain, '');
+var productPath = vinmonopolet.PRODUCT_URL.replace(domain, '');
 var productResponse = fs.readFileSync(__dirname + '/fixtures/product-detail-response.html', { encoding: 'utf8' });
 
-var crawler, mock;
+var mock;
 
 var test = redtape({
     beforeEach: function (cb) {
-        crawler = new ProductCrawler();
         mock = nock(domain);
         cb();
     },
@@ -33,7 +32,7 @@ var test = redtape({
 test('crawler handles 404-error on category retrieval gracefully', function(t) {
     mock.get(overviewPath).reply(404);
 
-    crawler.getCategories(function(err) {
+    vinmonopolet.getCategories(function(err) {
         t.ok(err, 'should error on invalid response');
         t.end();
     });
@@ -42,7 +41,7 @@ test('crawler handles 404-error on category retrieval gracefully', function(t) {
 test('crawler interprets no found categories as error', function(t) {
     mock.get(overviewPath).reply(200, 'Invalid HTML');
 
-    crawler.getCategories(function(err) {
+    vinmonopolet.getCategories(function(err) {
         t.ok(err, 'should error on no categories');
         t.equal('No categories found', err, 'should have correct error message');
         t.end();
@@ -52,7 +51,7 @@ test('crawler interprets no found categories as error', function(t) {
 test('crawler is able to extract categories on sane response', function(t) {
     mock.get(overviewPath).reply(200, overviewResponse);
 
-    crawler.getCategories(function(err, categories) {
+    vinmonopolet.getCategories(function(err, categories) {
         if (err) { t.error(err); }
 
         // Found all categories?
@@ -76,7 +75,7 @@ test('crawler is able to extract categories on sane response', function(t) {
 test('crawler handles 404-error on product search retrieval gracefully', function(t) {
     mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(404);
 
-    crawler.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err) {
+    vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err) {
         t.ok(err, 'should error on invalid response');
         t.end();
     });
@@ -86,7 +85,7 @@ test('crawler is able to extract products from a category', function(t) {
     mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
     mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=2').reply(200, searchResponse2);
 
-    crawler.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
+    vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
         if (err) { t.error(err); }
 
         // Found all products?
@@ -112,9 +111,9 @@ test('crawler is able to extract products from a category', function(t) {
 });
 
 test('crawler handles 404-error on product information retrieval gracefully', function(t) {
-    mock.get(productPath + 9351702 + ProductCrawler.PRODUCT_QUERY_PARAMS).reply(404);
+    mock.get(productPath + 9351702 + vinmonopolet.PRODUCT_QUERY_PARAMS).reply(404);
 
-    crawler.getProductDetails(9351702, function(err) {
+    vinmonopolet.getProductDetails(9351702, function(err) {
         t.ok(err, 'should error on invalid response');
         t.end();
     });
@@ -122,9 +121,9 @@ test('crawler handles 404-error on product information retrieval gracefully', fu
 
 test('crawler is able to extract product info', function(t) {
     var sku = 9351702;
-    mock.get(productPath + sku + ProductCrawler.PRODUCT_QUERY_PARAMS).reply(200, productResponse);
+    mock.get(productPath + sku + vinmonopolet.PRODUCT_QUERY_PARAMS).reply(200, productResponse);
 
-    crawler.getProductDetails(sku, function(err, product) {
+    vinmonopolet.getProductDetails(sku, function(err, product) {
         if (err) { t.error(err); }
 
         t.equal(product.title, 'Ægir Lynchburg Natt Barrel-Aged Imperial Porter', 'should have correct product title');

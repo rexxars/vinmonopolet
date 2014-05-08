@@ -1,18 +1,17 @@
 'use strict';
 
 var redtape = require('redtape');
-var ProductCrawler = require('../');
-var crawler, existingSku, productDetails;
+var vinmonopolet = require('../');
+var existingSku, productDetails;
 
 var test = redtape({
     beforeEach: function (cb) {
-        crawler = new ProductCrawler();
         cb();
     }
 });
 
 test('crawler is able to extract categories', function(t) {
-    crawler.getCategories(function(err, categories) {
+    vinmonopolet.getCategories(function(err, categories) {
         if (err) { t.error(err); }
 
         // Found some categories?
@@ -29,7 +28,7 @@ test('crawler is able to extract categories', function(t) {
 
 test('crawler is able to extract products from a category', function(t) {
     // Going to assume the Alkoholfritt-category exists
-    crawler.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
+    vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
         if (err) { t.error(err); }
 
         // Found some products?
@@ -58,7 +57,7 @@ test('crawler is able to extract products from a category', function(t) {
 });
 
 test('crawler is able to extract product info', function(t) {
-    crawler.getProductDetails(existingSku, function(err, product) {
+    vinmonopolet.getProductDetails(existingSku, function(err, product) {
         if (err) { t.error(err); }
 
         t.equal(product.title, productDetails.title, 'should have correct product title');

@@ -1,5 +1,5 @@
 {
-  "name": "vinmonopolet-products",
+  "name": "vinmonopolet",
   "version": "0.0.1",
   "description": "Crawls Vinmonopolet and extracts information on the products available",
   "main": "index.js",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rexxars/vinmonopolet-products.git"
+    "url": "git://github.com/rexxars/vinmonopolet.git"
   },
   "keywords": [
     "vinmonopolet",
@@ -30,7 +30,7 @@
   "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rexxars/vinmonopolet-products/issues"
+    "url": "https://github.com/rexxars/vinmonopolet/issues"
   },
-  "homepage": "https://github.com/rexxars/vinmonopolet-products"
+  "homepage": "https://github.com/rexxars/vinmonopolet"
 }
