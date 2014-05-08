@@ -1,0 +1,36 @@
+{
+  "name": "vinmonopolet-products",
+  "version": "0.0.1",
+  "description": "Crawls Vinmonopolet and extracts information on the products available",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^0.15.0",
+    "request": "^2.34.0",
+    "lodash": "^2.4.1",
+    "async": "^0.8.0"
+  },
+  "devDependencies": {
+    "nock": "^0.29.1",
+    "redtape": "^1.0.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/tape test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rexxars/vinmonopolet-products.git"
+  },
+  "keywords": [
+    "vinmonopolet",
+    "crawler",
+    "products",
+    "beer",
+    "wine"
+  ],
+  "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rexxars/vinmonopolet-products/issues"
+  },
+  "homepage": "https://github.com/rexxars/vinmonopolet-products"
+}
