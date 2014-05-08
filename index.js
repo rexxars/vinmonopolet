@@ -53,26 +53,34 @@ _.extend(Vinmonopolet, {
         Vinmonopolet.getProductsByFilters({ 25: name }, callback);
     },
 
+    getNumberOfPagesForSearch: function(filters, callback) {
+        Vinmonopolet.searchProducts(filters, 1, function(err, products, options) {
+            callback(err, options ? options.totalPages : undefined);
+        });
+    },
+
     getProductsByFilters: function(filters, callback) {
-        var page = 0,
-            lastPage = false,
-            allProducts = [];
+        var allProducts = [];
+        var queue = async.queue(function(task, cb) {
+            Vinmonopolet.searchProducts(filters, task.page, function(err, products) {
+                if (err) { return cb(err); }
 
-        async.doWhilst(
-            function(next) {
-                page++;
-                Vinmonopolet.searchProducts(filters, page, function(err, products, options) {
-                    if (err) { return callback(err); }
+                allProducts = allProducts.concat(products);
+                cb();
+            });
+        }, 7);
 
-                    allProducts = allProducts.concat(products);
-                    lastPage = options.isLastPage;
+        queue.drain = function() {
+            callback(undefined, allProducts);
+        };
 
-                    next();
-                });
-            },
-            function() { return lastPage === false; },
-            function(err) { callback(err, allProducts); }
-        );
+        Vinmonopolet.getNumberOfPagesForSearch(filters, function(err, totalPages) {
+            if (err) { return callback(err); }
+
+            for (var i = 1; i <= totalPages; i++) {
+                queue.push({ page: i });
+            }
+        });
     },
 
     searchProducts: function(filters, page, callback) {

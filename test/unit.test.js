@@ -83,6 +83,7 @@ test('crawler handles 404-error on product search retrieval gracefully', functio
 
 test('crawler is able to extract products from a category', function(t) {
     mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
+    mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
     mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=2').reply(200, searchResponse2);
 
     vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
