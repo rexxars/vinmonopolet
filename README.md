@@ -33,6 +33,7 @@ vinmonopolet.getCategories(function(err, categories) {
     */
 });
 
+// Note: This might take a while.
 vinmonopolet.getProductsByCategoryName('Øl', function(err, products) {
     console.log(products);
     /*
@@ -66,9 +67,9 @@ vinmonopolet.getProductDetails(9351702, function(err, product) {
       productType: 'Overgjæret',
       productSelection: 'Bestillingsutvalg',
       shopCategory: 'Uavhengig sortiment',
-      fullness: NaN,
-      sweetness: NaN,
-      bitterness: NaN,
+      fullness: 0.83,
+      sweetness: 0.5,
+      bitterness: 0.67,
       color: 'Mørk',
       aroma: 'Kaffe, mørkt malt, fat, whisky, noe vanilje.',
       taste: 'God fylde og bitterhet, kaffe, sjokolade og noe fat, lang avslutning.',
