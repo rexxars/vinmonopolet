@@ -154,3 +154,26 @@ test('crawler is able to extract product info', function(t) {
     });
 });
 
+test('crawler is able to extract availability for product', function(t) {
+    var sku = 9351702;
+    mock.get(productPath + sku + vinmonopolet.PRODUCT_QUERY_PARAMS).reply(200, productResponse);
+
+    vinmonopolet.getProductDetails(sku, function(err, product, availability) {
+        if (err) { t.error(err); }
+
+        t.equal(availability.length, 8, 'should find all stores');
+
+        if (availability.length > 7) {
+            t.equal(availability[0].shopName, 'Molde Vinmonopol', 'should find correct shop name');
+            t.equal(availability[0].shopId, 244, 'should find correct shop id');
+            t.equal(availability[0].quantity, 32, 'should find correct product quantity');
+
+            t.equal(availability[7].shopName, 'Voss Vinmonopol', 'should find correct shop name');
+            t.equal(availability[7].shopId, 298, 'should find correct shop id');
+            t.equal(availability[7].quantity, 18, 'should find correct product quantity');
+        }
+
+        t.end();
+    });
+});
+

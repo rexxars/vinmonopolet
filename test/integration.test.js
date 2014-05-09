@@ -85,3 +85,17 @@ test('crawler is able to extract product info', function(t) {
         t.end();
     });
 });
+
+test('crawler is able to extract availability for product', function(t) {
+    vinmonopolet.getProductDetails(existingSku, function(err, product, availability) {
+        if (err) { t.error(err); }
+
+        t.assert(availability.length > 0, 'should find one or more store with the product in stock');
+
+        t.assert(typeof availability[0].shopName === 'string', 'should find correct shop name');
+        t.assert(typeof availability[0].shopId === 'number', 'should find correct shop id');
+        t.assert(typeof availability[0].quantity === 'number', 'should find correct product quantity');
+
+        t.end();
+    });
+});
