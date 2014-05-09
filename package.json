@@ -4,7 +4,7 @@
   "description": "Crawls Vinmonopolet and extracts information on the products available",
   "main": "index.js",
   "dependencies": {
-    "cheerio": "^0.15.0",
+    "cheerio": "^0.16.0",
     "request": "^2.34.0",
     "lodash": "^2.4.1",
     "async": "^0.8.0"
