@@ -55,7 +55,7 @@ vinmonopolet.getProductsByCategoryName('Øl', function(err, products) {
     */
 });
 
-vinmonopolet.getProductDetails(9351702, function(err, product) {
+vinmonopolet.getProductDetails(9351702, function(err, product, availability) {
     console.log(product);
 
     /*
@@ -85,6 +85,19 @@ vinmonopolet.getProductDetails(9351702, function(err, product) {
       distributor: 'SKANLOG VSD AS',
       containerType: 'Engangsflasker av glass' }
     */
+
+   console.log(availability);
+   /*
+   [ {  shopName: 'Molde Vinmonopol',
+        shopId: 244,
+        quantity: 32 },
+      { shopName: 'Oslo, Kiellandsplass Vinmonopol',
+        shopId: 178,
+        quantity: 18 },
+      { shopName: 'Oslo, Oslo City Vinmonopol',
+        shopId: 143,
+        quantity: 32 } ]
+   */
 });
 
 ```
