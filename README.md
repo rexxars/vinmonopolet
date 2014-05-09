@@ -89,6 +89,11 @@ vinmonopolet.getProductDetails(9351702, function(err, product) {
 
 ```
 
+License
+=======
+
+This library is MIT-licensed.
+
 [1]: https://travis-ci.org/rexxars/vinmonopolet.png
 [2]: https://travis-ci.org/rexxars/vinmonopolet
 [3]: https://david-dm.org/rexxars/vinmonopolet.png
