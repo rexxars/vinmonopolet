@@ -97,7 +97,7 @@ test('crawler is able to extract products from a category', function(t) {
             t.equal(products[0].title, '3 Horses Apple Malt Beverage', 'should have correct product title');
             t.equal(products[0].sku, 109802, 'should have correct product sku');
             t.equal(products[0].containerSize, '33 cl', 'should have correct product container size');
-            t.equal(products[0].price, 19.9, 'should have correct product price');
+            t.equal(products[0].price, 1109.9, 'should have correct product price');
             t.equal(products[0].pricePerLiter, 60.3, 'should have correct product price per liter');
 
             t.equal(products[55].title, 'Weihenstephaner Hefeweissbier Alkoholfrei', 'should have correct product title');
@@ -176,4 +176,3 @@ test('crawler is able to extract availability for product', function(t) {
         t.end();
     });
 });
-
