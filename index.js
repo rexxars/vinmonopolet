@@ -5,6 +5,7 @@ var request = require('request'),
     _       = require('lodash');
 
 var categoryParser = require('./lib/parsers/category-parser'),
+    typesParser = require('./lib/parsers/types-parser'),
     productParser  = require('./lib/parsers/product-parser'),
     searchParser   = require('./lib/parsers/search-parser');
 
@@ -28,6 +29,7 @@ var Vinmonopolet = {};
 _.extend(Vinmonopolet, {
 
     OVERVIEW_URL: 'http://www.vinmonopolet.no/vareutvalg/',
+    TYPES_URL: 'http://www.vinmonopolet.no/vareutvalg/sok?expandFacet=5',
     SEARCH_URL: 'http://www.vinmonopolet.no/vareutvalg/sok',
     PRODUCT_URL: 'http://www.vinmonopolet.no/vareutvalg/vare/sku-',
     PRODUCT_QUERY_PARAMS: '?ShowShopsWithProdInStock=true&sku=504201&fylke_id=*',
@@ -39,6 +41,20 @@ _.extend(Vinmonopolet, {
 
     getCategories: function(callback) {
         pageRequest(Vinmonopolet.OVERVIEW_URL, categoryParser, callback);
+    },
+
+    getTypesByFilters: function(filters, callback) {
+        var filterIds = [], filterValues = [];
+
+        for (var key in filters) {
+            filterIds.push(key);
+            filterValues.push(filters[key]);
+        }
+
+        var url = Vinmonopolet.TYPES_URL + '&filterIds=' + filterIds.join(';') +
+                '&filterValues=' + filterValues.join('%3B');
+
+        pageRequest(url, typesParser, callback);
     },
 
     getProductDetails: function(productSku, callback) {
