@@ -52,7 +52,7 @@ _.extend(Vinmonopolet, {
         }
 
         var url = Vinmonopolet.TYPES_URL + '&filterIds=' + filterIds.join(';') +
-                '&filterValues=' + filterValues.join('%3B');
+                '&filterValues=' + encodeURIComponent(filterValues.join(';'));
 
         pageRequest(url, typesParser, callback);
     },
