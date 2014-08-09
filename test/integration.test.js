@@ -2,13 +2,8 @@
 
 var redtape = require('redtape');
 var vinmonopolet = require('../');
+var test = redtape();
 var existingSku, productDetails;
-
-var test = redtape({
-    beforeEach: function (cb) {
-        cb();
-    }
-});
 
 test('crawler is able to extract categories', function(t) {
     vinmonopolet.getCategories(function(err, categories) {
