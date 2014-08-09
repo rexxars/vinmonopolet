@@ -9,6 +9,11 @@ var domain = 'http://www.vinmonopolet.no';
 var overviewPath = vinmonopolet.OVERVIEW_URL.replace(domain, '');
 var overviewResponse = fs.readFileSync(__dirname + '/fixtures/overview-response.html', { encoding: 'utf8' });
 
+var typesPath = vinmonopolet.TYPES_URL.replace(domain, '');
+var typesResponse1 = fs.readFileSync(__dirname + '/fixtures/types-response-1.html', { encoding: 'utf8' });
+var typesResponse2 = fs.readFileSync(__dirname + '/fixtures/types-response-2.html', { encoding: 'utf8' });
+var typesResponse3 = fs.readFileSync(__dirname + '/fixtures/types-response-3.html', { encoding: 'utf8' });
+
 var searchPath = vinmonopolet.SEARCH_URL.replace(domain, '');
 var searchResponse1 = fs.readFileSync(__dirname + '/fixtures/search-response-1.html', { encoding: 'utf8' });
 var searchResponse2 = fs.readFileSync(__dirname + '/fixtures/search-response-2.html', { encoding: 'utf8' });
@@ -67,6 +72,64 @@ test('crawler is able to extract categories on sane response', function(t) {
             t.equal(categories[8].count, 56, 'should have correct category item count');
             t.equal(categories[8].filterId, 25, 'should have correct category filter id');
         }
+
+        t.end();
+    });
+});
+
+test('crawler interprets no found types as null', function(t) {
+    mock.get(typesPath + '&filterIds=25&filterValues=Hvitvin')
+        .reply(200, typesResponse1);
+
+    vinmonopolet.getTypesByFilters({ 25: 'Hvitvin' }, function(err, types) {
+        t.notOk(err, 'should not error on no types');
+        t.equal(null, types, 'result should be null on no types');
+        t.end();
+    });
+});
+
+test('crawler is able to extract types on sane response', function(t) {
+    mock.get(typesPath + '&filterIds=25&filterValues=Brennevin')
+        .reply(200, typesResponse2);
+
+    vinmonopolet.getTypesByFilters({ 25: 'Brennevin' }, function(err, types) {
+        if (err) { t.error(err); }
+
+        // Found all types?
+        t.equal(types.length, 14);
+
+        // Correct first and last title, count and filterId?
+        if (types.length >= 9) {
+            t.equal(types[0].title, 'Whisky', 'should have correct type title');
+            t.equal(types[0].count, 675, 'should have correct type item count');
+            t.equal(types[0].filterId, 26, 'should have correct type filter id');
+
+            t.equal(types[13].title, 'Genever', 'should have correct type title');
+            t.equal(types[13].count, 3, 'should have correct type item count');
+            t.equal(types[8].filterId, 26, 'should have correct type filter id');
+        }
+
+        t.end();
+    });
+});
+
+test('crawler is able to extract subtypes on sane response', function(t) {
+    mock.get(typesPath + '&filterIds=25;26&filterValues=Brennevin%3BWhisky')
+        .reply(200, typesResponse3);
+
+    vinmonopolet.getTypesByFilters({
+        25: 'Brennevin',
+        26: 'Whisky'
+    }, function(err, types) {
+        if (err) { t.error(err); }
+
+        // Found only type?
+        t.equal(types.length, 1);
+
+        // Correct title, count and filterId?
+        t.equal(types[0].title, 'Maltwhisky', 'should have correct type title');
+        t.equal(types[0].count, 508, 'should have correct type count');
+        t.equal(types[0].filterId, 27, 'should have correct type filter id');
 
         t.end();
     });
