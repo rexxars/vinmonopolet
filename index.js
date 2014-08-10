@@ -57,6 +57,59 @@ _.extend(Vinmonopolet, {
         pageRequest(url, typesParser, callback);
     },
 
+    getCategoryTree: function(callback) {
+        var getTypesTree = function(filters, callback) {
+            Vinmonopolet.getTypesByFilters(filters, function(err, types) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (!types) {
+                    return callback(undefined, null);
+                }
+
+                async.parallel(types.map(function(type) {
+                    return function(callback) {
+                        filters[type.filterId] = type.title;
+
+                        getTypesTree(_.clone(filters), function(err, subtypes) {
+                            if (err) {
+                                return callback(err);
+                            }
+
+                            type.subtypes = subtypes;
+
+                            callback(undefined, type);
+                        });
+                    };
+                }), callback);
+            });
+        };
+
+        Vinmonopolet.getCategories(function(err, categories) {
+            if (err) {
+                return callback(err);
+            }
+
+            async.parallel(categories.map(function(category) {
+                return function(callback) {
+                    var filters = {};
+                    filters[category.filterId] = category.title;
+
+                    getTypesTree(filters, function(err, types) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        category.types = types;
+
+                        callback(undefined, category);
+                    });
+                };
+            }), callback);
+        });
+    },
+
     getProductDetails: function(productSku, callback) {
         pageRequest(
             Vinmonopolet.PRODUCT_URL + productSku + Vinmonopolet.PRODUCT_QUERY_PARAMS,

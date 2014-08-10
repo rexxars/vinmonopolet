@@ -33,6 +33,42 @@ vinmonopolet.getCategories(function(err, categories) {
     */
 });
 
+// Note: This takes a while
+vinmonopolet.getCategoryTree(function(err, tree) {
+    console.log(tree);
+    /*
+    [ { title: 'Rødvin', count: 6149, filterId: 25, types: null },
+      { title: 'Hvitvin', count: 4128, filterId: 25, types: null },
+      { title: 'Rosévin', count: 490, filterId: 25, types: null },
+      ...
+      { title: 'Brennevin',
+        count: 2334,
+        filterId: 25,
+        types:
+          [ { title: 'Whisky',
+              count: 675,
+              filterId: 26,
+              subtypes: [
+                { title: 'Maltwhisky',
+                  count: 508,
+                  filterId: 27,
+                  subtypes: null } ] },
+            { title: 'Druebrennevin',
+               count: 564,
+               filterId: 26,
+               subtypes:
+                 [ { title: 'Grappa',
+                     count: 56,
+                     filterId: 27,
+                     subtypes: null } ] },
+            { title: 'Akevitt', count: 184, filterId: 26, subtypes: null },
+            ...
+          ]}
+      ...
+    ]
+    */
+});
+
 // Note: This might take a while.
 vinmonopolet.getProductsByCategoryName('Øl', function(err, products) {
     console.log(products);

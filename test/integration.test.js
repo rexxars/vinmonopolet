@@ -94,3 +94,37 @@ test('crawler is able to extract availability for product', function(t) {
         t.end();
     });
 });
+
+test('crawler is able to get category tree', function(t) {
+    vinmonopolet.getCategoryTree(function(err, tree) {
+        if (err) { t.error(err); }
+
+        t.equal(tree.length, 9, 'should have eight categories');
+
+        // Going to assume the red wine category does not lose the 0-index
+        t.equal(tree[0].title, 'Rødvin', 'should have correct category title');
+        t.assert(tree[0].count > 100, 'category should have item count above 100');
+        t.equal(tree[0].filterId, 25, 'should have correct category filter id');
+
+        // Going to assume the distilled spirits category does not lose the 6-index
+        t.assert(tree[6].types.length > 10, 'category brennevin should have more then 10 types');
+
+        // Going to assume the whisky type does not lose the 0-index
+        var whisky = tree[6].types[0];
+
+        t.equal(whisky.title, 'Whisky', 'should have correct type title');
+        t.assert(whisky.count > 100, 'type should have item count above 100');
+        t.equal(whisky.filterId, 26, 'should have correct type filter id');
+        t.assert(whisky.subtypes.length >= 1, 'type should have one or more subtypes');
+
+        // Going to assume the first whiskey subtype is malt whisky
+        var maltWhisky = whisky.subtypes[0];
+
+        t.equal(maltWhisky.title, 'Maltwhisky', 'type subtype should have correct title');
+        t.assert(maltWhisky.count > 100, 'type subtype should have item count above 100');
+        t.equal(maltWhisky.filterId, 27, 'type subtype should have correct filter id');
+        t.equal(maltWhisky.subtypes, null, 'type subtype should not have subtypes');
+
+        t.end();
+    });
+});
