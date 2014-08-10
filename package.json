@@ -1,6 +1,6 @@
 {
   "name": "vinmonopolet",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Crawls Vinmonopolet and extracts information on the products available",
   "main": "index.js",
   "dependencies": {
