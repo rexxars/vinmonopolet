@@ -1,36 +1,44 @@
 {
   "name": "vinmonopolet",
-  "version": "1.1.0",
-  "description": "Crawls Vinmonopolet and extracts information on the products available",
-  "main": "index.js",
-  "dependencies": {
-    "cheerio": "^0.17.0",
-    "request": "^2.40.0",
-    "lodash": "^2.4.1",
-    "async": "^0.9.0"
-  },
-  "devDependencies": {
-    "nock": "^0.29.1",
-    "redtape": "^1.0.0"
-  },
+  "description": "Extracts information on products, categories and stores from Vinmonopolet",
+  "version": "2.0.0",
+  "keywords": [
+    "vinmonopolet",
+    "beer",
+    "wine",
+    "products",
+    "stores"
+  ],
+  "main": "src/vinmonopolet.js",
   "scripts": {
-    "test": "./node_modules/.bin/tape test/*.test.js"
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter spec --recursive",
+    "lint": "eslint .",
+    "test": "mocha --reporter spec --recursive",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --reporter spec --recursive",
+    "prepublish": "npm prune && npm test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rexxars/vinmonopolet.git"
+    "url": "git@github.com:rexxars/vinmonopolet.git"
   },
-  "keywords": [
-    "vinmonopolet",
-    "crawler",
-    "products",
-    "beer",
-    "wine"
-  ],
   "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rexxars/vinmonopolet/issues"
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "eslint": "^0.21.0",
+    "eslint-config-vaffel": "^1.0.0",
+    "istanbul": "^0.3.14",
+    "mocha": "^2.2.4",
+    "nock": "^2.0.1"
   },
-  "homepage": "https://github.com/rexxars/vinmonopolet"
+  "dependencies": {
+    "async": "^0.9.0",
+    "cheerio": "^0.19.0",
+    "csv-parser": "^1.6.0",
+    "got": "^3.2.0",
+    "iconv-lite": "^0.4.8",
+    "lodash.assign": "^3.1.0",
+    "lodash.clone": "^3.0.1",
+    "request": "^2.55.0"
+  }
 }

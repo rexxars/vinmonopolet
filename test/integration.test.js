@@ -1,130 +1,153 @@
 'use strict';
 
-var redtape = require('redtape');
+var assert = require('assert');
+var expect = require('chai').expect;
 var vinmonopolet = require('../');
-var test = redtape();
 var existingSku, productDetails;
+var integrationEnabled = (
+    process.env.CONTINUOUS_INTEGRATION ||
+    process.env.INTEGRATION_TESTS_ENABLED
+);
 
-test('crawler is able to extract categories', function(t) {
-    vinmonopolet.getCategories(function(err, categories) {
-        if (err) { t.error(err); }
+var describ = integrationEnabled ? describe : describe.skip;
 
-        // Found some categories?
-        t.assert(categories.length > 0, 'number of categories should be larger than 0');
+describ('vinmonopolet (integration)', function() {
+    describe('scrapers', function() {
+        it('is able to extract categories', function(done) {
+            vinmonopolet.getCategories(function(err, categories) {
+                expect(err).not.to.be.ok;
 
-        // Going to assume the red wine category does not lose the 0-index
-        t.equal(categories[0].title, 'Rødvin', 'should have correct category title');
-        t.assert(categories[0].count > 100, 'category should have item count above 100');
-        t.equal(categories[0].filterId, 25, 'should have correct category filter id');
+                // Found some categories?
+                expect(categories.length).to.be.above(0, 'number of categories should be larger than 0');
 
-        t.end();
-    });
-});
+                // Going to assume the red wine category does not lose the 0-index
+                expect(categories[0].title).to.equal('Rødvin', 'should have correct category title');
+                expect(categories[0].productCount).to.be.above(100, 'category should have item count above 100');
+                expect(categories[0].filterId).to.equal(25, 'should have correct category filter id');
 
-test('crawler is able to extract products from a category', function(t) {
-    // Going to assume the Alkoholfritt-category exists
-    vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
-        if (err) { t.error(err); }
+                done();
+            });
+        });
 
-        // Found some products?
-        t.assert(products.length > 0, 'number of products should be larger than 0');
+        it('is able to extract products from a category', function(done) {
+            // Going to assume the Alkoholfritt-category exists
+            vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
+                expect(err).not.to.be.ok;
 
-        // Just making assumptions here...
-        t.assert(products[0].title.length > 5, 'should have product title');
-        t.assert(products[0].sku > 0, 'should have product sku');
-        t.assert(products[0].containerSize.indexOf('cl') > -1, 'should have a container size');
-        t.assert(products[0].price > 0, 'should have a product price');
-        t.assert(products[0].pricePerLiter > 0, 'should have a product price per liter');
+                // Found some products?
+                expect(products.length).to.be.above(0, 'number of products should be larger than 0');
 
-        // Ensure we don't have any NaN's
-        var keys = ['price', 'pricePerLiter', 'sku'], key;
-        for (var i = 0; i < keys.length; i++) {
-            key = keys[i];
-            t.assert(!isNaN(products[0][key]), key + ' should not equal NaN');
-        }
+                // Just making assumptions here...
+                expect(products[0].title.length).to.be.above(5, 'should have product title');
+                expect(products[0].sku).to.be.above(0, 'should have product sku');
+                expect(products[0].containerSize).to.above(0, 'should have a container size');
+                expect(products[0].price).to.be.above(0, 'should have a product price');
+                expect(products[0].pricePerLiter).to.be.above(0, 'should have a product price per liter');
 
-        // Cache for later reuse
-        existingSku = products[0].sku;
-        productDetails = products[0];
+                // Ensure we don't have any NaN's
+                var keys = ['price', 'pricePerLiter', 'sku'], key;
+                for (var i = 0; i < keys.length; i++) {
+                    key = keys[i];
+                    expect(!isNaN(products[0][key])).to.be.ok;
+                }
 
-        t.end();
-    });
-});
+                // Cache for later reuse
+                existingSku = products[0].sku;
+                productDetails = products[0];
 
-test('crawler is able to extract product info', function(t) {
-    vinmonopolet.getProductDetails(existingSku, function(err, product) {
-        if (err) { t.error(err); }
+                done();
+            });
+        });
 
-        t.equal(product.title, productDetails.title, 'should have correct product title');
-        t.equal(product.sku, existingSku, 'should have correct product sku');
-        t.equal(product.containerSize, productDetails.containerSize, 'should have correct product container size');
-        t.equal(product.price, productDetails.price, 'should have correct product price');
-        t.equal(product.pricePerLiter, productDetails.pricePerLiter, 'should have correct product price per liter');
-        t.assert(typeof product.productType === 'string', 'should have correct product type');
-        t.assert(typeof product.productSelection === 'string', 'should have correct product selection');
-        t.assert(typeof product.shopCategory === 'string', 'should have correct shop category');
-        t.assert(typeof product.color === 'string', 'should have correct product color');
-        t.assert(typeof product.aroma === 'string', 'should have correct product aroma');
-        t.assert(typeof product.taste === 'string', 'should have correct product taste');
-        t.assert(typeof product.foodPairings === 'string', 'should have correct food pairings');
-        t.assert(typeof product.countryRegion === 'string', 'should have correct product country/region');
-        t.assert(typeof product.ingredients === 'string', 'should have correct product ingredients');
-        t.assert(typeof product.alcohol === 'number', 'should have correct product alcohol percentage');
-        t.assert(typeof product.sugar === 'string', 'should have correct product sugar info');
-        t.assert(typeof product.acid === 'string', 'should have correct product acid info');
-        t.assert(typeof product.manufacturer === 'string', 'should have correct product manufacturer');
-        t.assert(typeof product.wholesaler === 'string', 'should have correct product wholesaler');
-        t.assert(typeof product.distributor === 'string', 'should have correct product distributor');
-        t.assert(typeof product.containerType === 'string', 'should have correct product container type');
+        it('is able to extract product info', function(done) {
+            vinmonopolet.getProduct(existingSku, function(err, product) {
+                expect(err).not.to.be.ok;
 
-        t.end();
-    });
-});
+                expect(product.title).to.equal(productDetails.title, 'should have correct product title');
+                expect(product.sku).to.equal(existingSku, 'should have correct product sku');
+                expect(product.containerSize).to.equal(productDetails.containerSize, 'should have correct product container size');
+                expect(product.price).to.equal(productDetails.price, 'should have correct product price');
+                expect(product.pricePerLiter).to.equal(productDetails.pricePerLiter, 'should have correct product price per liter');
+                assert(typeof product.productType === 'string', 'should have correct product type');
+                assert(typeof product.productSelection === 'string', 'should have correct product selection');
+                assert(typeof product.storeCategory === 'string', 'should have correct store category');
+                assert(typeof product.color === 'string', 'should have correct product color');
+                assert(typeof product.aroma === 'string', 'should have correct product aroma');
+                assert(typeof product.taste === 'string', 'should have correct product taste');
+                assert(Array.isArray(product.foodPairings), 'should have correct food pairings');
+                assert(typeof product.country === 'string', 'should have correct product country/region');
+                assert(typeof product.region === 'string', 'should have correct product country/region');
+                assert(typeof product.abv === 'number', 'should have correct product alcohol percentage');
+                assert(typeof product.manufacturer === 'string', 'should have correct product manufacturer');
+                assert(typeof product.wholesaler === 'string', 'should have correct product wholesaler');
+                assert(typeof product.distributor === 'string', 'should have correct product distributor');
+                assert(typeof product.containerType === 'string', 'should have correct product container type');
 
-test('crawler is able to extract availability for product', function(t) {
-    vinmonopolet.getProductDetails(existingSku, function(err, product, availability) {
-        if (err) { t.error(err); }
+                if (product.ingredients) {
+                    assert(typeof product.ingredients === 'string', 'should have correct product ingredients');
+                }
 
-        t.assert(availability.length > 0, 'should find one or more store with the product in stock');
+                if (product.sugar) {
+                    assert(typeof product.sugar === 'number', 'should have correct product sugar info');
+                }
 
-        t.assert(typeof availability[0].shopName === 'string', 'should find correct shop name');
-        t.assert(typeof availability[0].shopId === 'number', 'should find correct shop id');
-        t.assert(typeof availability[0].quantity === 'number', 'should find correct product quantity');
+                if (product.acid) {
+                    assert(typeof product.acid === 'string', 'should have correct product acid info');
+                }
 
-        t.end();
-    });
-});
+                done();
+            });
+        });
 
-test('crawler is able to get category tree', function(t) {
-    vinmonopolet.getCategoryTree(function(err, tree) {
-        if (err) { t.error(err); }
+        it('is able to extract availability for product', function(done) {
+            vinmonopolet.getProduct(existingSku, function(err, product) {
+                expect(err).not.to.be.ok;
 
-        t.equal(tree.length, 9, 'should have eight categories');
+                var availability = product.availability;
+                expect(availability.length).to.be.above(0, 'should find one or more store with the product in stock');
 
-        // Going to assume the red wine category does not lose the 0-index
-        t.equal(tree[0].title, 'Rødvin', 'should have correct category title');
-        t.assert(tree[0].count > 100, 'category should have item count above 100');
-        t.equal(tree[0].filterId, 25, 'should have correct category filter id');
+                assert(typeof availability[0].storeName === 'string', 'should find correct store name');
+                assert(typeof availability[0].storeId === 'number', 'should find correct store id');
+                assert(typeof availability[0].quantity === 'number', 'should find correct product quantity');
 
-        // Going to assume the distilled spirits category does not lose the 6-index
-        t.assert(tree[6].types.length > 10, 'category brennevin should have more then 10 types');
+                done();
+            });
+        });
 
-        // Going to assume the whisky type does not lose the 0-index
-        var whisky = tree[6].types[0];
+        it('is able to get category tree', function(done) {
+            this.timeout(20000);
 
-        t.equal(whisky.title, 'Whisky', 'should have correct type title');
-        t.assert(whisky.count > 100, 'type should have item count above 100');
-        t.equal(whisky.filterId, 26, 'should have correct type filter id');
-        t.assert(whisky.subtypes.length >= 1, 'type should have one or more subtypes');
+            vinmonopolet.getCategoryTree(function(err, tree) {
+                expect(err).not.to.be.ok;
 
-        // Going to assume the first whiskey subtype is malt whisky
-        var maltWhisky = whisky.subtypes[0];
+                expect(tree.length).to.equal(9, 'should have nine categories');
 
-        t.equal(maltWhisky.title, 'Maltwhisky', 'type subtype should have correct title');
-        t.assert(maltWhisky.count > 100, 'type subtype should have item count above 100');
-        t.equal(maltWhisky.filterId, 27, 'type subtype should have correct filter id');
-        t.equal(maltWhisky.subtypes, null, 'type subtype should not have subtypes');
+                // Going to assume the red wine category does not lose the 0-index
+                expect(tree[0].title).to.equal('Rødvin', 'should have correct category title');
+                expect(tree[0].productCount).to.be.above(100, 'category should have item count above 100');
+                expect(tree[0].filterId).to.equal(25, 'should have correct category filter id');
 
-        t.end();
+                // Going to assume the distilled spirits category does not lose the 6-index
+                expect(tree[6].types.length).to.be.above(10, 'category brennevin should have more then 10 types');
+
+                // Going to assume the whisky type does not lose the 0-index
+                var whisky = tree[6].types[0];
+
+                expect(whisky.title).to.equal('Whisky', 'should have correct type title');
+                expect(whisky.productCount).to.be.above(100, 'type should have item count above 100');
+                expect(whisky.filterId).to.equal(26, 'should have correct type filter id');
+                expect(whisky.subtypes.length).to.be.above(0, 'type should have one or more subtypes');
+
+                // Going to assume the first whiskey subtype is malt whisky
+                var maltWhisky = whisky.subtypes[0];
+
+                expect(maltWhisky.title).to.equal('Maltwhisky', 'type subtype should have correct title');
+                expect(maltWhisky.productCount).to.be.above(100, 'type subtype should have item count above 100');
+                expect(maltWhisky.filterId).to.equal(27, 'type subtype should have correct filter id');
+                expect(maltWhisky.subtypes).to.not.be.ok;
+
+                done();
+            });
+        });
     });
 });

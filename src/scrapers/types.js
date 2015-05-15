@@ -1,6 +1,7 @@
 'use strict';
 
 var cheerio = require('cheerio');
+var Type = require('../models/type');
 
 module.exports = function typesParser(body, callback) {
     var $ = cheerio.load(body),
@@ -10,16 +11,16 @@ module.exports = function typesParser(body, callback) {
         var link = $(this).find('a');
 
         var filterId = (link.attr('href')
-            .replace(/.*?filterIds=([\d;]+).*?/, '$1')
+            .replace(/.*?filterIds=([\d;]+).*/, '$1')
             .split(';')
             .pop());
 
-        types.push({
-            title: link.text().trim(),
-            count: parseInt($(this).find('em').text().replace(/[()]/g, ''), 10),
-            filterId: parseInt(filterId, 10)
-        });
+        types.push(new Type({
+            title: link.text(),
+            productCount: $(this).find('em').text().replace(/[()]/g, ''),
+            filterId: filterId
+        }));
     });
 
-    callback(undefined, types.length ? types : null);
+    callback(null, types.length ? types : null);
 };

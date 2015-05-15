@@ -1,13 +1,14 @@
 'use strict';
 
-module.exports = function(price) {
+module.exports = function priceFilter(price) {
     return Number(
-        price
+        String(price)
             .trim()
             .replace(/^Kr\.\s*/, '')
-            .replace('.', '')
+            .replace(/\./g, '')
             .replace(/,\-$/, '')
             .replace(/,/g, '.')
+            .replace(/\s/g, '')
             .replace(/(\d+(\.\d*)?)[\s\S]*/, '$1')
     );
 };
