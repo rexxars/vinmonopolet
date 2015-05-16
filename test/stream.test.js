@@ -179,12 +179,30 @@ describe('vinmonopolet-stream', function() {
                 done();
             });
         });
+
+        it('handles poorly formatted streams (unfinished quotes)', function(done) {
+            this.timeout(500);
+            var mock = getProductStreamMock(true);
+
+            var products = [];
+            polet.getProductStream().on('data', function(product) {
+                products.push(product);
+            }).on('end', function() {
+                expect(products).to.have.length(11);
+                mock.done();
+                done();
+            });
+        });
     });
 });
 
-function getProductStreamMock() {
+function getProductStreamMock(broken) {
     var stream = fs.createReadStream(
-        path.join(__dirname, 'fixtures', 'products-chunk.csv')
+        path.join(
+            __dirname,
+            'fixtures',
+            broken ? 'broken-products-chunk.csv' : 'products-chunk.csv'
+        )
     );
 
     return getNock()('http://www.vinmonopolet.no')
