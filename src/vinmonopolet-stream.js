@@ -3,10 +3,12 @@
 var util = require('util');
 var events = require('events');
 var iconv = require('iconv-lite');
+var split = require('split');
 var csv = require('csv-parser');
 var got = require('got');
 var Product = require('./models/product');
 var Store = require('./models/store');
+var symmetricStream = require('./util/symmetric-stream');
 
 var csvOptions = { separator: ';' };
 var productsUrl = 'http://www.vinmonopolet.no/api/produkter';
@@ -30,6 +32,8 @@ VinmonopoletStream.prototype.emitEnd = function() {
 function getCsvStream(url) {
     return got(url)
         .pipe(iconv.decodeStream('iso-8859-1'))
+        .pipe(split())
+        .pipe(symmetricStream())
         .pipe(csv(csvOptions));
 }
 
