@@ -39,7 +39,6 @@
     "got": "^3.2.0",
     "iconv-lite": "^0.4.8",
     "lodash.assign": "^3.1.0",
-    "lodash.clone": "^3.0.1",
-    "request": "^2.55.0"
+    "lodash.clone": "^3.0.1"
   }
 }
