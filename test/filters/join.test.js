@@ -23,4 +23,12 @@ describe('join filter', function() {
         expect(output).to.include.members(['foo', 'baz']);
         expect(output).to.have.length(2);
     });
+
+    it('applies the defined filter', function() {
+        var joiner = join(['a', 'z', 'c'], Number);
+        var output = joiner(null, {a: '50', b: 'bar', c: '3.14'});
+
+        expect(output).to.include.members([50, 3.14]);
+        expect(output).to.have.length(2);
+    });
 });

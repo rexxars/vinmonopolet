@@ -47,4 +47,10 @@ describe('volume filter', function() {
         expect(volume('3.51liter')).to.equal(3.51);
         expect(volume('3.51 liter')).to.equal(3.51);
     });
+
+    it('casts to number and leaves as-is on unknown unit', function() {
+        expect(volume('3')).to.equal(3);
+        expect(volume('3 ')).to.equal(3);
+        expect(volume('3gl')).to.equal(3);
+    });
 });

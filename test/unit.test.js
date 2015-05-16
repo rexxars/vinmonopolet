@@ -21,6 +21,9 @@ var typesResponse3 = readFixture('types-response-3.html');
 var searchPath = vinmonopolet.SEARCH_URL.replace(domain, '');
 var searchResponse1 = readFixture('search-response-1.html');
 var searchResponse2 = readFixture('search-response-2.html');
+var queryResponse1 = readFixture('search-query-response-1.html');
+var queryResponse2 = readFixture('search-query-response-2.html');
+var queryResponse3 = readFixture('search-query-response-3.html');
 
 var productPath = vinmonopolet.PRODUCT_URL.replace(domain, '');
 var productResponse = readFixture('product-detail-response.html');
@@ -141,7 +144,7 @@ describe('vinmonopolet (unit)', function() {
         it('handles 404-error on product search retrieval gracefully', function(done) {
             mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(404);
 
-            vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err) {
+            vinmonopolet.searchProducts({ filters: { 25: 'Alkoholfritt' } }, function(err) {
                 assert(err, 'should error on invalid response');
                 done();
             });
@@ -152,7 +155,7 @@ describe('vinmonopolet (unit)', function() {
             mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
             mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=2').reply(200, searchResponse2);
 
-            vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
+            vinmonopolet.searchProducts({ filters: { 25: 'Alkoholfritt' } }, function(err, products) {
                 expect(err).is.not.ok;
 
                 // Found all products?
@@ -171,6 +174,37 @@ describe('vinmonopolet (unit)', function() {
                     expect(products[55].containerSize).to.equal(0.5, 'should have correct product container size');
                     expect(products[55].price).to.equal(24.4, 'should have correct product price');
                     expect(products[55].pricePerLiter).to.equal(48.8, 'should have correct product price per liter');
+                }
+
+                done();
+            });
+        });
+
+        it('is able to extract products from a search result', function(done) {
+            mock.get(searchPath + '?query=brygghus&sort=2&sortMode=0&countresult=true&page=1').reply(200, queryResponse1);
+            mock.get(searchPath + '?query=brygghus&sort=2&sortMode=0&countresult=true&page=1').reply(200, queryResponse1);
+            mock.get(searchPath + '?query=brygghus&sort=2&sortMode=0&countresult=true&page=2').reply(200, queryResponse2);
+            mock.get(searchPath + '?query=brygghus&sort=2&sortMode=0&countresult=true&page=3').reply(200, queryResponse3);
+
+            vinmonopolet.searchProducts({ query: 'brygghus' }, function(err, products) {
+                expect(err).is.not.ok;
+
+                // Found all products?
+                expect(products).length.to.be(72, 'should find all products for query');
+
+                // Correct values for result on first and last page?
+                if (products.length >= 72) {
+                    expect(products[25].title).to.equal('Ego Brygghus Reign in Citra', 'should have correct product title');
+                    expect(products[25].sku).to.equal(2270002, 'should have correct product sku');
+                    expect(products[25].containerSize).to.equal(0.5, 'should have correct product container size');
+                    expect(products[25].price).to.equal(69.5, 'should have correct product price');
+                    expect(products[25].pricePerLiter).to.equal(139, 'should have correct product price per liter');
+
+                    expect(products[71].title).to.equal('Thy økologisk humle', 'should have correct product title');
+                    expect(products[71].sku).to.equal(1757202, 'should have correct product sku');
+                    expect(products[71].containerSize).to.equal(0.33, 'should have correct product container size');
+                    expect(products[71].price).to.equal(41.7, 'should have correct product price');
+                    expect(products[71].pricePerLiter).to.equal(126.4, 'should have correct product price per liter');
                 }
 
                 done();

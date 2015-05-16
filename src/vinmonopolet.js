@@ -41,7 +41,8 @@ Vinmonopolet.getTypesByFilters = function(filters, callback) {
     requestUrl(url, typesScraper, callback);
 };
 
-Vinmonopolet.getProduct = function(sku, callback) {
+Vinmonopolet.getProduct = function(product, callback) {
+    var sku = product.sku || product;
     requestUrl(
         Vinmonopolet.PRODUCT_URL + sku + Vinmonopolet.PRODUCT_QUERY_PARAMS + sku,
         productScraper,
@@ -50,17 +51,17 @@ Vinmonopolet.getProduct = function(sku, callback) {
 };
 
 Vinmonopolet.getProductsByCategoryName = function(name, callback) {
-    Vinmonopolet.getProductsByFilters({ 25: name }, callback);
+    Vinmonopolet.searchProducts({ filters: { 25: name } }, callback);
 };
 
-Vinmonopolet.getNumberOfPagesForSearch = function(filters, callback) {
-    Vinmonopolet.searchProducts(filters, 1, function(err, products, options) {
+Vinmonopolet.getNumberOfPagesForSearch = function(data, callback) {
+    Vinmonopolet.getSearchPage(data, 1, function(err, products, options) {
         callback(err, options ? options.totalPages : null);
     });
 };
 
-Vinmonopolet.getProductsByFilters = require('./get-products-by-filters');
 Vinmonopolet.getCategoryTree = require('./get-category-tree');
+Vinmonopolet.getSearchPage = require('./get-search-page');
 Vinmonopolet.searchProducts = require('./search-products');
 
 merge(Vinmonopolet, VinmonopoletStream);

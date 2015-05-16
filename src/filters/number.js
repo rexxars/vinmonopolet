@@ -25,7 +25,10 @@ numberFilter.greedy = function(number) {
         return null;
     }
 
-    return Number(num.replace(/[^\d\.]/g, ''));
+    return Number(num
+        .replace(/[^\d\.]/g, '')
+        .replace(/(^\.+|\.+$)/g, '')
+    );
 };
 
 numberFilter.nullify = function(nulls) {

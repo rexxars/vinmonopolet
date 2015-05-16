@@ -1,14 +1,9 @@
 'use strict';
 
-var textFilter = require('./text');
-var numberFilter = require('./number');
+var Availability = require('../models/availability');
 
 function filterStoreAvailability(availability) {
-    return {
-        storeId: numberFilter(availability.storeId),
-        storeName: textFilter(availability.storeName),
-        quantity: numberFilter(availability.quantity)
-    };
+    return new Availability(availability);
 }
 
 module.exports = function availabilityFilter(stores) {

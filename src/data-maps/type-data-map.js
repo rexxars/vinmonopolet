@@ -1,7 +1,6 @@
 'use strict';
 
 var numberFilter = require('../filters/number');
-var textFilter = require('../filters/text');
 var trimFilter = require('../filters/trim');
 
 module.exports = {

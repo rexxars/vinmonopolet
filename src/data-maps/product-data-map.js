@@ -5,7 +5,6 @@ var clockToPrctFilter = require('../filters/clock-to-percentage');
 var numberFilter = require('../filters/number');
 var volumeFilter = require('../filters/volume');
 var priceFilter = require('../filters/price');
-var splitFilter = require('../filters/split');
 var joinFilter = require('../filters/join');
 var textFilter = require('../filters/text');
 var trimFilter = require('../filters/trim');

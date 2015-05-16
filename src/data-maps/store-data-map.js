@@ -35,15 +35,15 @@ module.exports = {
         filter: openingHoursFilter
     },
     'Apn_torsdag': {
-        name: 'openingHoursFriday',
+        name: 'openingHoursThursday',
         filter: openingHoursFilter
     },
     'Apn_fredag': {
-        name: 'openingHoursSaturday',
+        name: 'openingHoursFriday',
         filter: openingHoursFilter
     },
     'Apn_lordag': {
-        name: 'openingHoursSunday',
+        name: 'openingHoursSaturday',
         filter: openingHoursFilter
     },
     // LOL RIGHT LIKE THIS IS EVER GONNA HAPPEN :( :(
@@ -70,15 +70,15 @@ module.exports = {
         filter: openingHoursFilter
     },
     'Apn_neste_torsdag': {
-        name: 'openingHoursNextFriday',
+        name: 'openingHoursNextThursday',
         filter: openingHoursFilter
     },
     'Apn_neste_fredag': {
-        name: 'openingHoursNextSaturday',
+        name: 'openingHoursNextFriday',
         filter: openingHoursFilter
     },
     'Apn_neste_lordag': {
-        name: 'openingHoursNextSunday',
+        name: 'openingHoursNextSaturday',
         filter: openingHoursFilter
     },
     // LOL RIGHT LIKE THIS IS EVER GONNA HAPPEN :( :(

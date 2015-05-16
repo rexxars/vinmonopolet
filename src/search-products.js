@@ -1,36 +1,43 @@
 'use strict';
 
+var async = require('async');
 var Vinmonopolet = require('./vinmonopolet');
-var requestUrl = require('./util/request-url');
-var searchScraper = require('./scrapers/search');
-var extend = require('lodash.assign');
 
-module.exports = function searchProducts(filters, page, callback) {
-    var query = {}, filterIds = [], filterValues = [];
-    for (var key in filters) {
-        filterIds.push(key);
-        filterValues.push(filters[key]);
-    }
+module.exports = function getAllProductsForSearch(data, callback) {
+    var allProducts = [];
+    var queue = async.queue(function(task, cb) {
+        Vinmonopolet.getSearchPage(data, task.page, function(err, products) {
+            if (err) {
+                return cb(err);
+            }
 
-    query = extend(
-        query,
-        Vinmonopolet.SEARCH_DEFAULT_PARAMETERS,
-        {
-            filterIds: filterIds.join(';'),
-            filterValues: filterValues.join(';')
+            if (data.detailed) {
+                async.map(products, Vinmonopolet.getProduct, function(mapErr, results) {
+                    if (mapErr) {
+                        return cb(mapErr);
+                    }
+
+                    allProducts = allProducts.concat(results);
+                    cb();
+                });
+            } else {
+                allProducts = allProducts.concat(products);
+                cb();
+            }
+        });
+    }, 7);
+
+    queue.drain = function() {
+        callback(null, allProducts);
+    };
+
+    Vinmonopolet.getNumberOfPagesForSearch(data, function(err, totalPages) {
+        if (err) {
+            return callback(err);
         }
-    );
 
-    var qs = [];
-    for (key in query) {
-        qs.push(key + '=' + encodeURIComponent(query[key]));
-    }
-
-    qs.push('page=' + page);
-
-    requestUrl(
-        Vinmonopolet.SEARCH_URL + '?' + qs.join('&'),
-        searchScraper,
-        callback
-    );
+        for (var i = 1; i <= totalPages; i++) {
+            queue.push({ page: i });
+        }
+    });
 };

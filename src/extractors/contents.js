@@ -8,7 +8,9 @@ module.exports = function contentsExtractor(el, $) {
         prop = parts[0];
         value = parts[1];
 
-        props[prop] = value;
+        if (prop && value) {
+            props[prop] = value;
+        }
     });
 
     return props;

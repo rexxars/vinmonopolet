@@ -145,17 +145,18 @@ describe('vinmonopolet-stream', function() {
                 expect(last.phoneNumber).to.equal('04560');
                 expect(last.category).to.equal('Kategori 7');
                 expect(last.weekNumber).to.equal(20);
+
                 expect(last.openingHoursMonday.opens).to.equal(600);
                 expect(last.openingHoursMonday.closes).to.equal(1080);
                 expect(last.openingHoursTuesday.opens).to.equal(600);
                 expect(last.openingHoursTuesday.closes).to.equal(1080);
                 expect(last.openingHoursWednesday.opens).to.equal(600);
                 expect(last.openingHoursWednesday.closes).to.equal(1080);
-                expect(last.openingHoursFriday).to.equal(null);
+                expect(last.openingHoursThursday).to.equal(null);
+                expect(last.openingHoursFriday.opens).to.equal(600);
+                expect(last.openingHoursFriday.closes).to.equal(1080);
                 expect(last.openingHoursSaturday.opens).to.equal(600);
-                expect(last.openingHoursSaturday.closes).to.equal(1080);
-                expect(last.openingHoursSunday.opens).to.equal(600);
-                expect(last.openingHoursSunday.closes).to.equal(900);
+                expect(last.openingHoursSaturday.closes).to.equal(900);
                 expect(last.weekNumberNext).to.equal(21);
                 expect(last.openingHoursNextMonday.opens).to.equal(600);
                 expect(last.openingHoursNextMonday.closes).to.equal(1080);
@@ -163,11 +164,12 @@ describe('vinmonopolet-stream', function() {
                 expect(last.openingHoursNextTuesday.closes).to.equal(1080);
                 expect(last.openingHoursNextWednesday.opens).to.equal(600);
                 expect(last.openingHoursNextWednesday.closes).to.equal(1080);
+                expect(last.openingHoursNextThursday.opens).to.equal(600);
+                expect(last.openingHoursNextThursday.closes).to.equal(1080);
                 expect(last.openingHoursNextFriday.opens).to.equal(600);
                 expect(last.openingHoursNextFriday.closes).to.equal(1080);
-                expect(last.openingHoursNextSaturday.opens).to.equal(600);
-                expect(last.openingHoursNextSaturday.closes).to.equal(1080);
-                expect(last.openingHoursNextSunday).to.equal(null);
+                expect(last.openingHoursNextSaturday).to.equal(null);
+
                 expect(last.gpsCoordinates).to.include.members([
                     10.3809509,
                     63.3682271

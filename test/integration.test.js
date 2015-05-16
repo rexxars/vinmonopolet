@@ -14,6 +14,7 @@ var describ = integrationEnabled ? describe : describe.skip;
 describ('vinmonopolet (integration)', function() {
     describe('scrapers', function() {
         it('is able to extract categories', function(done) {
+            this.timeout(5000);
             vinmonopolet.getCategories(function(err, categories) {
                 expect(err).not.to.be.ok;
 
@@ -30,8 +31,10 @@ describ('vinmonopolet (integration)', function() {
         });
 
         it('is able to extract products from a category', function(done) {
+            this.timeout(5000);
+
             // Going to assume the Alkoholfritt-category exists
-            vinmonopolet.getProductsByFilters({ 25: 'Alkoholfritt' }, function(err, products) {
+            vinmonopolet.searchProducts({ filters: { 25: 'Alkoholfritt' } }, function(err, products) {
                 expect(err).not.to.be.ok;
 
                 // Found some products?
@@ -60,6 +63,8 @@ describ('vinmonopolet (integration)', function() {
         });
 
         it('is able to extract product info', function(done) {
+            this.timeout(5000);
+
             vinmonopolet.getProduct(existingSku, function(err, product) {
                 expect(err).not.to.be.ok;
 
@@ -100,6 +105,8 @@ describ('vinmonopolet (integration)', function() {
         });
 
         it('is able to extract availability for product', function(done) {
+            this.timeout(5000);
+
             vinmonopolet.getProduct(existingSku, function(err, product) {
                 expect(err).not.to.be.ok;
 

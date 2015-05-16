@@ -7,7 +7,9 @@ module.exports = function(el, $) {
         var facet = $(this).find('em').text().replace(/:$/, ''),
             clock = ($(this).find('img').attr('src') || '').replace(/.*clocks\/(\d+).*/, '$1');
 
-        props[facet] = clock;
+        if (facet && clock) {
+            props[facet] = clock;
+        }
     });
 
     return props;

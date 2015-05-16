@@ -26,11 +26,16 @@ module.exports = function searchParser(body, callback) {
     });
 
     // See if we're on the last page
-    pages = $('table.pages');
-    currentPage = pages.find('td b').text();
-    isLastPage = pages.find('td').last().children().last().is('a') === false;
-    lastPage = pages.find('td a').last().prev().attr('href').replace(/.*?page=(\d+).*/, '$1');
-    totalPages = parseInt(isLastPage ? currentPage : lastPage, 10);
+    pages = $('table.pages').last();
+    currentPage = pages.find('td b').text().trim();
+
+    if (currentPage) {
+        isLastPage = pages.find('td').last().children().last().is('a') === false;
+        lastPage = pages.find('td a').last().prev().attr('href').replace(/.*?page=(\d+).*/, '$1');
+        totalPages = parseInt(isLastPage ? currentPage : lastPage, 10);
+    } else {
+        totalPages = 1;
+    }
 
     callback(null, products, {
         totalPages: totalPages
