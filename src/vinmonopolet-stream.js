@@ -27,13 +27,17 @@ VinmonopoletStream.prototype.emitEnd = function() {
     this.emit('end');
 };
 
+function getCsvStream(url) {
+    return got(url)
+        .pipe(iconv.decodeStream('iso-8859-1'))
+        .pipe(csv(csvOptions));
+}
+
 module.exports = {
     getProductStream: function() {
         var stream = new VinmonopoletStream();
 
-        got(productsUrl)
-            .pipe(iconv.decodeStream('iso-8859-1'))
-            .pipe(csv(csvOptions))
+        getCsvStream(productsUrl)
             .on('data', stream.parseProduct.bind(stream))
             .on('end', stream.emitEnd.bind(stream));
 
@@ -43,9 +47,7 @@ module.exports = {
     getStoreStream: function() {
         var stream = new VinmonopoletStream();
 
-        got(storesUrl)
-            .pipe(iconv.decodeStream('iso-8859-1'))
-            .pipe(csv(csvOptions))
+        getCsvStream(storesUrl)
             .on('data', stream.parseStore.bind(stream))
             .on('end', stream.emitEnd.bind(stream));
 
