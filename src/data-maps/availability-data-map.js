@@ -14,5 +14,9 @@ module.exports = {
 
     quantity: {
         filter: numberFilter
+    },
+
+    productSku: {
+        filter: numberFilter
     }
 };

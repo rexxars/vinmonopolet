@@ -8,13 +8,15 @@ module.exports = function getAllProductsForSearch(data, callback) {
     var queue = async.queue(function(task, cb) {
         Vinmonopolet.getSearchPage(data, task.page, function(err, products) {
             if (err) {
-                return cb(err);
+                queue.kill();
+                return callback(err);
             }
 
             if (data.detailed) {
                 async.map(products, Vinmonopolet.getProduct, function(mapErr, results) {
                     if (mapErr) {
-                        return cb(mapErr);
+                        queue.kill();
+                        return callback(mapErr);
                     }
 
                     allProducts = allProducts.concat(results);
@@ -27,8 +29,8 @@ module.exports = function getAllProductsForSearch(data, callback) {
         });
     }, 7);
 
-    queue.drain = function() {
-        callback(null, allProducts);
+    queue.drain = function(err) {
+        callback(err, allProducts);
     };
 
     Vinmonopolet.getNumberOfPagesForSearch(data, function(err, totalPages) {

@@ -25,6 +25,9 @@ var queryResponse1 = readFixture('search-query-response-1.html');
 var queryResponse2 = readFixture('search-query-response-2.html');
 var queryResponse3 = readFixture('search-query-response-3.html');
 
+var ricSearchResponse = readFixture('ric-search-response.html');
+var ricDetailResponse = readFixture('ric-detail-response.html');
+
 var productPath = vinmonopolet.PRODUCT_URL.replace(domain, '');
 var productResponse = readFixture('product-detail-response.html');
 
@@ -276,6 +279,188 @@ describe('vinmonopolet (unit)', function() {
                     expect(availability[7].quantity).to.equal(18, 'should find correct product quantity');
                 }
 
+                done();
+            });
+        });
+
+        it('can use the getProductsByCategoryName() alias for easy search within category', function(done) {
+            mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(404);
+
+            vinmonopolet.getProductsByCategoryName('Alkoholfritt', function(err) {
+                assert(err, 'should error on invalid response');
+                done();
+            });
+        });
+
+        it('is able to extract products from a category', function(done) {
+            mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
+            mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=1').reply(200, searchResponse1);
+            mock.get(searchPath + '?query=*&sort=2&sortMode=0&filterIds=25&filterValues=Alkoholfritt&page=2').reply(200, searchResponse2);
+
+            vinmonopolet.searchProducts({ filters: { 25: 'Alkoholfritt' } }, function(err, products) {
+                expect(err).is.not.ok;
+
+                // Found all products?
+                expect(products).length.to.be(56, 'should find all products for filter');
+
+                // Correct values for first and last product?
+                if (products.length >= 56) {
+                    expect(products[0].title).to.equal('3 Horses Apple Malt Beverage', 'should have correct product title');
+                    expect(products[0].sku).to.equal(109802, 'should have correct product sku');
+                    expect(products[0].containerSize).to.equal(0.33, 'should have correct product container size');
+                    expect(products[0].price).to.equal(1109.9, 'should have correct product price');
+                    expect(products[0].pricePerLiter).to.equal(60.3, 'should have correct product price per liter');
+
+                    expect(products[55].title).to.equal('Weihenstephaner Hefeweissbier Alkoholfrei', 'should have correct product title');
+                    expect(products[55].sku).to.equal(116502, 'should have correct product sku');
+                    expect(products[55].containerSize).to.equal(0.5, 'should have correct product container size');
+                    expect(products[55].price).to.equal(24.4, 'should have correct product price');
+                    expect(products[55].pricePerLiter).to.equal(48.8, 'should have correct product price per liter');
+                }
+
+                done();
+            });
+        });
+
+        it('is able to extract detailed product info from a search', function(done) {
+            var sku = 2270002;
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(200, ricSearchResponse);
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(200, ricSearchResponse);
+            mock.get(productPath + sku + vinmonopolet.PRODUCT_QUERY_PARAMS + sku).reply(200, ricDetailResponse);
+
+            vinmonopolet.searchProducts({ query: 'Reign in Citra', detailed: true }, function(err, products) {
+                expect(err).to.not.be.an.instanceOf(Error);
+
+                // Found all products?
+                expect(products).length.to.be(1, 'should find just one product for search');
+
+                expect(products[0].title).to.equal('Ego Brygghus Reign in Citra', 'should have correct product title');
+                expect(products[0].sku).to.equal(sku, 'should have correct product sku');
+                expect(products[0].containerSize).to.equal(0.5, 'should have correct product container size');
+                expect(products[0].price).to.equal(69.50, 'should have correct product price');
+                expect(products[0].pricePerLiter).to.equal(139, 'should have correct product price per liter');
+                expect(products[0].fullness).to.equal(58, 'should have correct product fullness');
+                expect(products[0].availability).to.have.length(7, 'should have correct product availability info');
+
+                done();
+            });
+        });
+
+        it('is returns error if detailed info retrieval fails for a search', function(done) {
+            var sku = 2270002;
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(200, ricSearchResponse);
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(200, ricSearchResponse);
+            mock.get(productPath + sku + vinmonopolet.PRODUCT_QUERY_PARAMS + sku).reply(404);
+
+            vinmonopolet.searchProducts({ query: 'Reign in Citra', detailed: true }, function(err) {
+                expect(err).to.be.an.instanceOf(Error);
+                done();
+            });
+        });
+
+        it('is returns error if an error occurs during retrieval of search results', function(done) {
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(200, ricSearchResponse);
+            mock.get(searchPath + '?query=Reign%20in%20Citra&sort=2&sortMode=0&countresult=true&page=1').reply(503, 'Server error');
+
+            vinmonopolet.searchProducts({ query: 'Reign in Citra', detailed: true }, function(err) {
+                expect(err).to.be.an.instanceOf(Error);
+                done();
+            });
+        });
+
+        it('can get whole category tree', function(done) {
+            var overview = [
+                '<div><h3 class="title"><a href="/sok?filterIds=25">R&oslash;dvin</a> <em>(6033)</em></h3>',
+                '<h3 class="title"><a href="/sok?filterIds=25">Brennevin</a> <em>(2438)</em></h3></div>'
+            ].join('');
+
+            var liquor = [
+                '<div class="content"><div class="facet"><ul><li>',
+                '<a href="/sok?filterIds=25;26&amp;filterValues=Brennevin%3BWhisky">Whisky</a>',
+                '&nbsp;<em>(675)</em></li></ul></div></div>'
+            ].join('');
+
+            mock.get(overviewPath).reply(200, overview);
+            mock.get(typesPath + '&filterIds=25&filterValues=R%C3%B8dvin').reply(200, typesResponse1);
+            mock.get(typesPath + '&filterIds=25&filterValues=Brennevin').reply(200, liquor);
+            mock.get(typesPath + '&filterIds=25;26&filterValues=Brennevin%3BWhisky').reply(200, typesResponse3);
+            mock.get(typesPath + '&filterIds=25;26;27&filterValues=Brennevin%3BWhisky%3BMaltwhisky').reply(200, '');
+
+            vinmonopolet.getCategoryTree(function(err, tree) {
+                expect(err).not.to.be.an.instanceOf(Error);
+
+                // Root level
+                expect(tree[0].title).to.equal('Rødvin');
+                expect(tree[0].filterId).to.equal(25);
+                expect(tree[0].productCount).to.equal(6033);
+
+                expect(tree[1].title).to.equal('Brennevin');
+                expect(tree[1].filterId).to.equal(25);
+                expect(tree[1].productCount).to.equal(2438);
+
+                // Types within brennevin
+                expect(tree[1].types).to.have.length(1);
+                expect(tree[1].types[0].title).to.equal('Whisky', 'should have correct type title');
+                expect(tree[1].types[0].productCount).to.equal(675, 'should have correct type item count');
+                expect(tree[1].types[0].filterId).to.equal(26, 'should have correct type filter id');
+
+                // Subtypes within whisky
+                expect(tree[1].types[0].subtypes).to.have.length(1);
+
+                // Correct title, count and filterId?
+                expect(tree[1].types[0].subtypes[0].title).to.equal('Maltwhisky', 'should have correct type title');
+                expect(tree[1].types[0].subtypes[0].productCount).to.equal(508, 'should have correct type count');
+                expect(tree[1].types[0].subtypes[0].filterId).to.equal(27, 'should have correct type filter id');
+                expect(tree[1].types[0].subtypes[0].subtypes).to.be.an('undefined');
+
+                done();
+            });
+        });
+
+        it('returns error if request to fetch root-level categories failed', function(done) {
+            mock.get(overviewPath).reply(503, 'Server error');
+            vinmonopolet.getCategoryTree(function(err) {
+                expect(err).to.be.an.instanceOf(Error);
+                done();
+            });
+        });
+
+        it('returns error if a request for a type in the chain fails', function(done) {
+            var overview = [
+                '<div><h3 class="title"><a href="/sok?filterIds=25">R&oslash;dvin</a> <em>(6033)</em></h3>',
+                '<h3 class="title"><a href="/sok?filterIds=25">Brennevin</a> <em>(2438)</em></h3></div>'
+            ].join('');
+
+            mock.get(overviewPath).reply(200, overview);
+            mock.get(typesPath + '&filterIds=25&filterValues=R%C3%B8dvin').reply(200, typesResponse1);
+            mock.get(typesPath + '&filterIds=25&filterValues=Brennevin').reply(503, 'Server error');
+
+            vinmonopolet.getCategoryTree(function(err) {
+                expect(err).to.be.an.instanceOf(Error);
+                done();
+            });
+        });
+
+        it('returns error if a request for a subtype in the chain fails', function(done) {
+            var overview = [
+                '<div><h3 class="title"><a href="/sok?filterIds=25">R&oslash;dvin</a> <em>(6033)</em></h3>',
+                '<h3 class="title"><a href="/sok?filterIds=25">Brennevin</a> <em>(2438)</em></h3></div>'
+            ].join('');
+
+            var liquor = [
+                '<div class="content"><div class="facet"><ul><li>',
+                '<a href="/sok?filterIds=25;26&amp;filterValues=Brennevin%3BWhisky">Whisky</a>',
+                '&nbsp;<em>(675)</em></li></ul></div></div>'
+            ].join('');
+
+            mock.get(overviewPath).reply(200, overview);
+            mock.get(typesPath + '&filterIds=25&filterValues=R%C3%B8dvin').reply(200, typesResponse1);
+            mock.get(typesPath + '&filterIds=25&filterValues=Brennevin').reply(200, liquor);
+            mock.get(typesPath + '&filterIds=25;26&filterValues=Brennevin%3BWhisky').reply(200, typesResponse3);
+            mock.get(typesPath + '&filterIds=25;26;27&filterValues=Brennevin%3BWhisky%3BMaltwhisky').reply(503);
+
+            vinmonopolet.getCategoryTree(function(err) {
+                expect(err).to.be.an.instanceOf(Error);
                 done();
             });
         });

@@ -9,7 +9,7 @@ var cheerio = require('cheerio'),
     foodPairingExtractor = require('../extractors/food-pairings'),
     characteristicsExtractor = require('../extractors/characteristics');
 
-module.exports = function productParser(body, callback) {
+function productParser(body, callback) {
     var $ = cheerio.load(body),
         priceEl = $('#addToCart');
 
@@ -20,6 +20,10 @@ module.exports = function productParser(body, callback) {
         Pris: priceEl.find('h3 strong').text(),
         Literpris: priceEl.find('p').text()
     };
+
+    if (!productInfo.Varenummer || !productInfo.Varenavn) {
+        return callback(new Error('Product SKU or name not found'));
+    }
 
     // Get meta-info
     $('.productData li').each(function() {
@@ -38,22 +42,30 @@ module.exports = function productParser(body, callback) {
             extend(productInfo, contentExtractor(li, $));
         } else if (attrib === 'Passer til') {
             extend(productInfo, foodPairingExtractor(li, $));
-        } else {
-            /* eslint-disable no-console */
-            console.log('Unknown prop: "' + attrib + '"');
-            /* eslint-enable no-console */
+        } else if (process.env.DEBUG) {
+            productParser.unknownPropLogger('Unknown prop: "' + attrib + '", value: "' + value + '"');
         }
     });
 
     // Store availability
-    productInfo.availability = [];
     $('.listStores li').each(function() {
+        if (!productInfo.availability) {
+            productInfo.availability = [];
+        }
+
         productInfo.availability.push({
             storeName: $(this).find('a').text(),
             storeId: $(this).find('a').attr('href').replace(/.*butikk_id=(\d+).*/, '$1'),
-            quantity: $(this).find('em').text().replace(/.*\((\d+) på lager\).*/, '$1')
+            quantity: $(this).find('em').text().replace(/.*\((\d+) på lager\).*/, '$1'),
+            productSku: productInfo.Varenummer
         });
     });
 
     callback(null, new Product(productInfo));
-};
+}
+
+/* eslint-disable no-console */
+productParser.unknownPropLogger = console.log;
+/* eslint-enable no-console */
+
+module.exports = productParser;
