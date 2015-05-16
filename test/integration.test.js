@@ -73,31 +73,31 @@ describ('vinmonopolet (integration)', function() {
                 expect(product.containerSize).to.equal(productDetails.containerSize, 'should have correct product container size');
                 expect(product.price).to.equal(productDetails.price, 'should have correct product price');
                 expect(product.pricePerLiter).to.equal(productDetails.pricePerLiter, 'should have correct product price per liter');
-                assert(typeof product.productType === 'string', 'should have correct product type');
-                assert(typeof product.productSelection === 'string', 'should have correct product selection');
-                assert(typeof product.storeCategory === 'string', 'should have correct store category');
-                assert(typeof product.color === 'string', 'should have correct product color');
-                assert(typeof product.aroma === 'string', 'should have correct product aroma');
-                assert(typeof product.taste === 'string', 'should have correct product taste');
+                expect(product.productType).to.be.a('string', 'should have correct product type');
+                expect(product.productSelection).to.be.a('string', 'should have correct product selection');
+                expect(product.storeCategory).to.be.a('string', 'should have correct store category');
+                expect(product.color).to.be.a('string', 'should have correct product color');
+                expect(product.aroma).to.be.a('string', 'should have correct product aroma');
+                expect(product.taste).to.be.a('string', 'should have correct product taste');
                 assert(Array.isArray(product.foodPairings), 'should have correct food pairings');
-                assert(typeof product.country === 'string', 'should have correct product country/region');
-                assert(typeof product.region === 'string', 'should have correct product country/region');
-                assert(typeof product.abv === 'number', 'should have correct product alcohol percentage');
-                assert(typeof product.manufacturer === 'string', 'should have correct product manufacturer');
-                assert(typeof product.wholesaler === 'string', 'should have correct product wholesaler');
-                assert(typeof product.distributor === 'string', 'should have correct product distributor');
-                assert(typeof product.containerType === 'string', 'should have correct product container type');
+                expect(product.country).to.be.a('string', 'should have correct product country');
+                expect(product.region).to.be.a('string', 'should have correct product region');
+                expect(product.abv).to.be.a('number', 'should have correct product alcohol percentage');
+                expect(product.manufacturer).to.be.a('string', 'should have correct product manufacturer');
+                expect(product.wholesaler).to.be.a('string', 'should have correct product wholesaler');
+                expect(product.distributor).to.be.a('string', 'should have correct product distributor');
+                expect(product.containerType).to.be.a('string', 'should have correct product container type');
 
                 if (product.ingredients) {
-                    assert(typeof product.ingredients === 'string', 'should have correct product ingredients');
+                    expect(product.ingredients).to.be.a('string', 'should have correct product ingredients');
                 }
 
                 if (product.sugar) {
-                    assert(typeof product.sugar === 'number', 'should have correct product sugar info');
+                    expect(product.sugar).to.be.a('number', 'should have correct product sugar info');
                 }
 
                 if (product.acid) {
-                    assert(typeof product.acid === 'string', 'should have correct product acid info');
+                    expect(product.acid).to.be.a('string', 'should have correct product acid info');
                 }
 
                 done();
