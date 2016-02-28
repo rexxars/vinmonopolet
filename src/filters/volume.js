@@ -11,10 +11,10 @@ var units = {
 };
 
 module.exports = function volumeFilter(val) {
-    if (typeof val === 'number') {
-        return val;
-    } else if (val === '') {
+    if (!val) {
         return null;
+    } else if (typeof val === 'number') {
+        return val;
     }
 
     var unit = val.match(/(ml|cl|dl|l|liter)/) || [];
