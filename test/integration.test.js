@@ -97,7 +97,7 @@ describ('vinmonopolet (integration)', function() {
                 }
 
                 if (product.acid) {
-                    expect(product.acid).to.be.a('string', 'should have correct product acid info');
+                    expect(product.acid).to.be.a('number', 'should have correct product acid info');
                 }
 
                 done();
