@@ -150,12 +150,12 @@ module.exports = {
         filter: availabilityFilter
     },
 
-    'Råstoff': {
+    Råstoff: {
         name: 'ingredients',
         filter: textFilter
     },
 
-    'Distributør': {
+    Distributør: {
         name: 'distributor',
         filter: textFilter
     }

@@ -27,8 +27,8 @@
   "devDependencies": {
     "chai": "^2.3.0",
     "concat-stream": "^1.4.8",
-    "eslint": "^0.21.1",
-    "eslint-config-vaffel": "^1.0.0",
+    "eslint": "^1.10.3",
+    "eslint-config-vaffel": "^4.0.0",
     "istanbul": "^0.3.14",
     "mocha": "^2.2.4",
     "nock": "^2.0.1",
