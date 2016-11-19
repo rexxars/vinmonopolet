@@ -1,7 +1,7 @@
 {
   "name": "vinmonopolet",
   "description": "Extracts information on products, categories and stores from Vinmonopolet",
-  "version": "2.0.3",
+  "version": "3.0.0-beta1",
   "keywords": [
     "vinmonopolet",
     "beer",
@@ -9,14 +9,24 @@
     "products",
     "stores"
   ],
-  "main": "src/vinmonopolet.js",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "browser": {
+    "./lib/stream.js": "./lib/no-browser.js"
+  },
   "scripts": {
-    "coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter spec --recursive",
+    "browserify": "NODE_ENV=production DEBUG='' browserify -t envify lib/index.js -o umd/vinmonopolet.js --standalone=Vinmonopolet",
+    "build": "npm run clean && npm run compile && npm run browserify && npm run minify && npm run size",
+    "clean": "rimraf lib coverage .nyc_output umd/*.js",
+    "compile": "babel --source-maps --copy-files -d lib/ src/",
+    "coverage": "nyc --reporter=html --reporter=lcov --reporter=text _mocha",
     "lint": "eslint .",
-    "test": "mocha --reporter spec --recursive",
-    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --reporter spec --recursive",
-    "prepublish": "npm prune && INTEGRATION_TESTS_ENABLED=1 npm test",
-    "posttest": "npm run lint"
+    "minify": "uglifyjs -c -m -- umd/vinmonopolet.js > umd/vinmonopolet.min.js",
+    "postpublish": "npm run clean",
+    "posttest": "npm run lint",
+    "prepublish": "in-publish && npm prune && npm test || not-in-publish",
+    "size": "node -r babel-register src/scripts/print-bundle-size",
+    "test": "mocha --reporter spec --recursive"
   },
   "repository": {
     "type": "git",
@@ -25,24 +35,39 @@
   "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^2.3.0",
-    "concat-stream": "^1.4.8",
-    "eslint": "^1.10.3",
-    "eslint-config-vaffel": "^4.0.0",
-    "istanbul": "^0.3.14",
-    "mocha": "^2.2.4",
-    "nock": "^2.0.1",
-    "string-to-stream": "^1.0.1"
+    "babel-cli": "^6.18.0",
+    "babel-preset-env": "^0.0.9",
+    "boxen": "^0.8.1",
+    "browserify": "^13.1.1",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chalk": "^1.1.3",
+    "envify": "^4.0.0",
+    "eslint": "^3.10.2",
+    "eslint-config-bengler": "^2.0.0",
+    "gzip-size": "^3.0.0",
+    "hard-rejection": "^0.1.0",
+    "lodash": "^4.17.2",
+    "mocha": "^3.1.2",
+    "nock": "^9.0.2",
+    "nyc": "^9.0.1",
+    "pretty-bytes": "^4.0.2",
+    "rimraf": "^2.5.4",
+    "uglify-js": "^2.7.4",
+    "uglifyify": "^3.0.4",
+    "unpipe": "^1.0.0"
   },
   "dependencies": {
-    "async": "^0.9.0",
-    "cheerio": "^0.19.0",
-    "csv-parser": "^1.6.0",
-    "got": "^3.2.0",
-    "iconv-lite": "^0.4.8",
-    "lodash.assign": "^3.1.0",
-    "lodash.clone": "^3.0.1",
-    "split": "^0.3.3",
-    "through2": "^0.6.5"
+    "csv-parser": "^1.11.0",
+    "es6-promise-pool": "^2.4.4",
+    "fetch-ponyfill": "^3.0.2",
+    "got": "^6.6.3",
+    "iconv-lite": "^0.4.13",
+    "in-publish": "^2.0.0",
+    "object-assign": "^4.1.0",
+    "promise-props": "^1.0.0",
+    "query-string": "^4.2.3",
+    "split": "^1.0.0",
+    "through2": "^2.0.1"
   }
 }
