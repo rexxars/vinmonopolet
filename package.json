@@ -16,7 +16,7 @@
     "test": "mocha --reporter spec --recursive",
     "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --reporter spec --recursive",
     "prepublish": "npm prune && INTEGRATION_TESTS_ENABLED=1 npm test",
-    "pretest": "npm run lint"
+    "posttest": "npm run lint"
   },
   "repository": {
     "type": "git",

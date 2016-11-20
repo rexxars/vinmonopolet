@@ -8,11 +8,12 @@ var csv = require('csv-parser');
 var got = require('got');
 var Product = require('./models/product');
 var Store = require('./models/store');
+var csvUrlsScraper = require('./scrapers/csvUrls');
+var requestUrl = require('./util/request-url');
 var symmetricStream = require('./util/symmetric-stream');
 
 var csvOptions = { separator: ';' };
-var productsUrl = 'http://www.vinmonopolet.no/api/produkter';
-var storesUrl = 'http://www.vinmonopolet.no/api/butikker';
+var refUrl = 'https://www.vinmonopolet.no/datadeling';
 
 function VinmonopoletStream() {}
 util.inherits(VinmonopoletStream, events.EventEmitter);
@@ -41,9 +42,16 @@ module.exports = {
     getProductStream: function() {
         var stream = new VinmonopoletStream();
 
-        getCsvStream(productsUrl)
-            .on('data', stream.parseProduct.bind(stream))
-            .on('end', stream.emitEnd.bind(stream));
+        getCsvUrls(function(err, urls) {
+            if (err) {
+                stream.emit('error', err);
+                return;
+            }
+
+            getCsvStream(urls.products)
+                .on('data', stream.parseProduct.bind(stream))
+                .on('end', stream.emitEnd.bind(stream));
+        });
 
         return stream;
     },
@@ -51,10 +59,21 @@ module.exports = {
     getStoreStream: function() {
         var stream = new VinmonopoletStream();
 
-        getCsvStream(storesUrl)
-            .on('data', stream.parseStore.bind(stream))
-            .on('end', stream.emitEnd.bind(stream));
+        getCsvUrls(function(err, urls) {
+            if (err) {
+                stream.emit('error', err);
+                return;
+            }
+
+            getCsvStream(urls.stores)
+                .on('data', stream.parseStore.bind(stream))
+                .on('end', stream.emitEnd.bind(stream));
+        });
 
         return stream;
     }
 };
+
+function getCsvUrls(callback) {
+    requestUrl(refUrl, csvUrlsScraper, callback);
+}

@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <title>
+    Bruk av produkt- og butikkdata fra Vinmonopolet | Vinmonopolet</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="robots" content="index,follow">
+        <link rel="apple-touch-icon" sizes="57x57" href="/_ui/responsive/theme-vmp/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/_ui/responsive/theme-vmp/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/_ui/responsive/theme-vmp/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/_ui/responsive/theme-vmp/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/_ui/responsive/theme-vmp/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/_ui/responsive/theme-vmp/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/_ui/responsive/theme-vmp/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/_ui/responsive/theme-vmp/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/_ui/responsive/theme-vmp/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/_ui/responsive/theme-vmp/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/_ui/responsive/theme-vmp/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/_ui/responsive/theme-vmp/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/_ui/responsive/theme-vmp/favicon/favicon-16x16.png">
+  <link rel="shortcut icon" type="image/x-icon" media="all" href="/_ui/responsive/theme-vmp/favicon/favicon.ico" />
+  <link rel="manifest" href="/_ui/responsive/theme-vmp/favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/_ui/responsive/theme-vmp/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+  
+  @import url(https://fonts.googleapis.com/css?family=Playfair+Display:400,400italic,700,700italic);
+  @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700);
+</style>
+<link rel="stylesheet" type="text/css" media="all" href="/combined.css?id=d248d36d15867b9_3" />
+
+<!--[if lt IE 9]>
+     <script>
+          document.createElement('header');
+          document.createElement('nav');
+          document.createElement('section');
+          document.createElement('main');
+          document.createElement('article');
+          document.createElement('aside');
+          document.createElement('footer');
+      </script>
+    <link rel="stylesheet" type="text/css" href="/_ui/responsive/theme-vmp/css/old-ie.css" />
+  <![endif]-->
+
+  
+
+
+
+
+  
+
+
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript">document.documentElement.className = "js-enabled"</script>
+</head>
+
+<body class="site page-datadeling pageType-ArticleContentPage template-pages-vmp-articleLayout1Page  language-no">
+  <script type="text/javascript" src="/_ui/shared/js/analyticsmediator.js"></script>
+<!-- Google Tag Manager -->
+
+<script type="text/javascript">
+  dataLayer = [];
+  
+  function trackUpdateCart(productCode, initialQuantity, newQuantity) {
+    if (initialQuantity != newQuantity) {
+      if (initialQuantity > newQuantity) {
+        dataLayer.push({
+          'event': 'removeFromCart',
+          'ecommerce': {
+            'currencyCode': '',
+            'add': {                                
+              'products': [{                        
+                'name': '',
+                'id': productCode,
+                'price': '',
+                'brand': '',
+                'category': '',
+                'variant': '',
+                'quantity': initialQuantity - newQuantity
+               }]
+            }
+          }
+        });
+      } 
+      else {
+        dataLayer.push({
+          'event': 'addToCart',
+          'ecommerce': {
+            'currencyCode': '',
+            'add': {                                
+              'products': [{                        
+                'name': '',
+                'id': productCode,
+                'price': '',
+                'brand': '',
+                'category': '',
+                'variant': '',
+                'quantity': newQuantity - initialQuantity
+               }]
+            }
+          }
+        });
+      }
+    }
+  }
+
+  function trackAddToCart_google(data){
+    dataLayer.push({
+      'event': 'addToCart',
+      'ecommerce': {
+        'currencyCode': '',
+        'add': {                                
+          'products': [{                        
+            'name': '',
+            'id': data.productCode,
+            'price': '',
+            'brand': '',
+            'category': '',
+            'variant': '',
+            'quantity': data.quantity
+           }]
+        }
+      }
+    });
+  };
+  function trackRemoveFromCart(data){
+    dataLayer.push({
+      'event': 'removeFromCart',
+      'ecommerce': {
+        'remove': {                        
+          'products': [{                       
+            'name': '',
+            'id': data.productCode,
+            'price': '',
+            'brand': '',
+            'category': '',
+            'variant': '',
+            'quantity': data.initialCartQuantity
+           }]
+        }
+      }
+    });
+  };
+  window.mediator.subscribe('trackAddToCart', function(data) {
+    if (data.productCode && data.quantity)
+    {
+      trackAddToCart_google(data);
+    }
+  });
+
+  window.mediator.subscribe('trackUpdateCart', function(data) {
+    if (data.productCode && data.initialCartQuantity && data.newCartQuantity)
+    {
+      trackUpdateCart(data.productCode, data.initialCartQuantity, data.newCartQuantity);
+    }
+  });
+  window.mediator.subscribe('trackRemoveFromCart', function(data) {
+    if (data.productCode && data.initialCartQuantity)
+    {
+      trackRemoveFromCart(data);
+    }
+  });
+</script>
+
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-W37V2K"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W37V2K');</script><div class="section setion--content section--always-margin old-ie">
+    <div class="section__inner-container">
+      <h1>Du benytter en utdatert nettleser som Vinmonopolet.no ikke lenger støtter</h1>
+      <p>Vennligst last ned en av følgende oppdaterte, gratis og gode nettlesere:</p>
+      <ul>
+        <li>
+          <a href="http://www.mozilla.com/firefox/" target="_blank">Firefox (Mozilla Foundation)</a>
+        </li>
+        <li>
+          <a href="http://www.opera.com/browser/" target="_blank">Opera (Opera Software)</a>
+        </li>
+        <li>
+          <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome (Google)</a>
+        </li>
+        <li>
+          <a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie" target="_blank">Internet Explorer (Microsoft)</a>
+        </li>
+      </ul>
+      <p>Vi ønsker deg velkommen igjen.</p>
+    </div>
+  </div>
+
+  <div >
+      <div class="skiplinks">
+        
+        <a class="skiplinks__link" href="#page" accesskey="s">
+          Hopp til hovedinnhold [Accesskey 's']
+        </a>
+        
+        <a class="skiplinks__link" href="#primary-navigation" >
+          Hopp til hovednavigasjon
+        </a>
+
+        <a class="skiplinks__link" href="#site-search" accesskey="4">
+          Hopp til søk [Accesskey '4']
+        </a>
+
+        <a class="skiplinks__link" href="#site-footer">
+          Hopp til bunnmeny med kontaktinformasjon
+        </a>        
+
+      </div>    
+
+      <header class="site__header">
+
+  <div class="yCmsContentSlot section">
+</div><div class="section">
+    <div class="section__inner-container">
+      <div class="site__logo-and-nav-toggler">
+        <a class="site__go-home" href="/"><span class="sr-only">Tilbake til forsiden</span></a>
+        <div class="menu-button">
+          <button class="menu-button__button js-nav-toggler">
+            <span class="sr-only menu-button__text js-nav-text">Vis menyen</span>
+            <div class="menu-button__icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+          </button>
+          <span class="menu-button__cart-total js-menu-button__cart-total">
+            <span class="sr-only">Antall varer i handlekurven:</span>
+            <span class="js-menu-button__cart-total-amount"></span>
+          </span>
+        </div>
+        <div class="login-and-user">
+          <a class="login-and-user__login" href="/vmpSite/login">
+                Logg inn</a>
+            </div>
+      </div>
+    </div>
+  </div>
+  <div class="site__nav-toggler-container js-nav-container">
+    <div class="section section--bg-black">
+        <div class="section__inner-container navigation-container">
+        
+        <nav class="primary-navigation" id="primary-navigation">
+        <ul class="primary-navigation__top-nav-items list-unstyled">
+            <li class=" auto primary-navigation__top-nav-item " >
+  
+  <a href="/search/?q=" class="primary-navigation__top-nav-item-link js-primary-navigation-top-nav-toggler">
+    Varer</a>
+  <div  class="primary-navigation__top-nav-item-children">
+      <div class="VarerCategoryNavNodeMenu">
+            <div class="primary-navigation__section">
+              <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/search/?q="  title="Alle varer" >Alle varer<span class='link-list__postfix'></span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/R%C3%B8dvin/c/r%C3%B8dvin?q=::mainCategory:rødvin"  title="Rødvin" >Rødvin<span class='link-list__postfix'>(6572)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Hvitvin/c/hvitvin?q=::mainCategory:hvitvin"  title="Hvitvin" >Hvitvin<span class='link-list__postfix'>(4012)</span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Ros%C3%A9vin/c/ros%C3%A9vin?q=::mainCategory:rosévin"  title="Rosévin" >Rosévin<span class='link-list__postfix'>(444)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/%C3%98l/c/%C3%B8l?q=::mainCategory:øl"  title="Øl" >Øl<span class='link-list__postfix'>(1407)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Perlende-vin/c/perlende_vin?q=::mainCategory:perlende_vin"  title="Perlende vin" >Perlende vin<span class='link-list__postfix'>(98)</span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Sider/c/sider?q=::mainCategory:sider"  title="Sider" >Sider<span class='link-list__postfix'>(72)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Fruktvin/c/fruktvin?q=::mainCategory:fruktvin"  title="Fruktvin" >Fruktvin<span class='link-list__postfix'>(22)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Aromatisert-vin/c/aromatisert_vin?q=::mainCategory:aromatisert_vin"  title="Aromatisert vin" >Aromatisert vin<span class='link-list__postfix'>(100)</span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Musserende-vin/c/musserende_vin?q=::mainCategory:musserende_vin"  title="Musserende vin" >Musserende vin<span class='link-list__postfix'>(1292)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Brennevin/c/brennevin?q=::mainCategory:brennevin"  title="Brennevin" >Brennevin<span class='link-list__postfix'>(2820)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Sterkvin/c/sterkvin?q=::mainCategory:sterkvin"  title="Sterkvin" >Sterkvin<span class='link-list__postfix'>(327)</span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Alkoholfritt/c/alkoholfritt?q=::mainCategory:alkoholfritt"  title="Alkoholfritt" >Alkoholfritt<span class='link-list__postfix'>(72)</span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/Nettbutikk-kategorier/Gavekort/Gavekort/p/gavekort"  title="Gavekort" >Gavekort<span class='link-list__postfix'></span></a></li><li class="yCmsComponent">
+<a href="/vmpSite/search?q=::mainCategory:new-products"  title="Nyheter" >Nyheter<span class='link-list__postfix'>(804)</span></a></li></ul>
+
+                  </div>
+                  </div>
+              <div class="primary-navigation__goes-well-with">
+                  <h2>Finn drikke til mat:</h2>
+                  <div class="goes-well-with">
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:D">
+                        <span class="goes-well-with__icon goes-well-with__icon--D">
+                          Lyst kjøtt</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:C">
+                        <span class="goes-well-with__icon goes-well-with__icon--C">
+                          Fisk</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:B">
+                        <span class="goes-well-with__icon goes-well-with__icon--B">
+                          Skalldyr</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:A">
+                        <span class="goes-well-with__icon goes-well-with__icon--A">
+                          Aperitiff</span>                                  
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:R">
+                        <span class="goes-well-with__icon goes-well-with__icon--R">
+                          Grønnsaker</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:Q">
+                        <span class="goes-well-with__icon goes-well-with__icon--Q">
+                          Svin</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:N">
+                        <span class="goes-well-with__icon goes-well-with__icon--N">
+                          Dessert</span>                                  
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:L">
+                        <span class="goes-well-with__icon goes-well-with__icon--L">
+                          Ost</span>                                  
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:H">
+                        <span class="goes-well-with__icon goes-well-with__icon--H">
+                          Storvilt</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:G">
+                        <span class="goes-well-with__icon goes-well-with__icon--G">
+                          Småvilt</span>                                  
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:F">
+                        <span class="goes-well-with__icon goes-well-with__icon--F">
+                          Lam og sau</span>                                 
+                      </a>
+                    <a class="goes-well-with__item" href="/search?q=:relevance:isGoodfor:E">
+                        <span class="goes-well-with__icon goes-well-with__icon--E">
+                          Storfe</span>                                 
+                      </a>
+                    </div>    
+                </div>          
+              </div>
+        </div>
+  </li>
+
+
+<li class=" auto primary-navigation__top-nav-item " >
+  
+  <a href="/store-finder" class="primary-navigation__top-nav-item-link js-primary-navigation-top-nav-toggler">
+    Butikker</a>
+  <div  class="primary-navigation__top-nav-item-children">
+      <div class="ButikerCategoryNavNodeMenu">
+            <section class="store-finder-search js-store-finder-goto-search-result-page">
+
+    <h2 class="store-finder-search__headline">
+        Finn butikker og åpningstider</h2>
+
+    <div class="store-finder-search__inner-container">
+
+        <form id="storeFinderFormMenu" action="/vmpSite/store-finder" method="get"><div class="input-group">
+                    <input type="hidden" name="showStoreLocator" value="1" />
+                    <div class="form-group">
+        <label class="control-label sr-only" for="storelocator-query-menu"> Poststed
+          &nbsp;*</label>
+
+    <input id="storelocator-query-menu" name="q" class="form-control js-store-finder-search-input form-control" placeholder="Postnummer eller sted" required="required" value=""/></div>
+    <span class="input-group-btn">
+                        <button class="btn" type="submit" data-search-empty="Kontroller at du har registrert et gydig postnummer eller poststed.">
+                            <span class="icon-sok"></span>
+                            <span class="sr-only">SÃ¸k etter butikk</span>
+                        </button>
+                    </span>
+                </div>
+            <div>
+<input type="hidden" name="CSRFToken" value="8642f681-0a02-4ebd-b9ca-412ce671dd70" />
+</div></form><span class="store-finder-search__or">
+            eller</span>
+
+        <form action="/vmpSite/store-finder" method="get" class="store-finder-search__geolocation js-geolocation-form">
+                <input type="hidden" name="longitude" />
+                <input type="hidden" name="latitude" />
+                <button class="btn btn--geolocation btn--outline store-finder-search__find findStoresNearMe js-geolocation-form" type="button">
+                    <span class="btn__text">Finn mitt nærmeste Vinmonopol</span>
+                    <span class="spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+        </div>
+
+</section></div>
+        </div>
+  </li>
+
+
+<li class=" auto primary-navigation__top-nav-item " >
+  
+  <a href="/les-og-laer" class="primary-navigation__top-nav-item-link js-primary-navigation-top-nav-toggler">
+    Les og lær</a>
+  <div  class="primary-navigation__top-nav-item-children">
+      <div class="InsperationCategoryNavNodeMenu">
+            <div class="primary-navigation__section">
+              <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/publikasjoner"  title="Publikasjoner" >Publikasjoner<span class='link-list__postfix'></span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/mat-og-drikke"  title="Mat og drikke" >Mat og drikke<span class='link-list__postfix'></span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/lar-om-vin"  title="Lær om vin" >Lær om vin<span class='link-list__postfix'></span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/lar-om-ol"  title="Lær om øl" >Lær om øl<span class='link-list__postfix'></span></a></li></ul>
+
+                  </div>
+                  <div class="primary-navigation__row">
+                  <ul class="link-list">                        
+                    <li class="yCmsComponent">
+<a href="/vmpSite/vinkurs"  title="Vinkurs" >Vinkurs<span class='link-list__postfix'></span></a></li></ul>
+
+                  </div>
+                  </div>
+              </div>
+        </div>
+  </li>
+
+
+</ul>
+    </nav>
+<div class="breadcrumb-section">
+    <div class="container">
+      <ol class="breadcrumbs" aria-label="brÃ¸dsmulesti" role="navigation">
+  <li>
+    <a href="/vmpSite/">Forsiden</a>
+  </li>
+
+  <li class="active">Bruk av produkt- og butikkdata fra Vinmonopolet</li>
+      </ol>
+</div>
+  </div>
+<div class="secondary-navigation">    
+          <ul class="secondary-navigation-items list-unstyled">
+
+            <li class="secondary-navigation__item secondary-navigation__minside">
+              <a class="secondary-navigation__link" href="/vmpSite/my-account">
+                  <span class="secondary-navigation__link-icon">
+                    Min side</span>
+                </a>
+              </li>   
+
+                    <li class="secondary-navigation__item secondary-navigation__favorites">             
+                  <a class="secondary-navigation__link" href="/vmpSite/wishlist">
+                <span class="secondary-navigation__link-icon">
+                    Favoritter
+                  </span>
+                </a>     
+                    </li> 
+
+                    <li class="secondary-navigation__item secondary-navigation__minicart">        
+              <div class="mini-cart">
+  <a  href="/vmpSite/cart" 
+    class="mini-cart__link js-mini-cart__link" 
+    data-mini-cart-url="/vmpSite/cart/rollover/MiniCart" 
+    data-mini-cart-refresh-url="/vmpSite/cart/miniCart/SUBTOTAL" 
+    data-mini-cart-name="Handlekurv" 
+    data-mini-cart-empty-name="Tom handlekurv"
+
+    >
+    <span class="mini-cart__icon" aria-live="polite">
+      <span class="mini-cart__count js-mini-cart-count mini-cart__count--hidden">0</span>
+        <span class="mini-cart__price sr-only js-mini-cart-price">
+          Kr. 0,00</span>
+          
+      Handlekurv
+    </span>   
+  </a>
+</div>
+</li>
+          </ul>
+        </div>    
+      </div>
+      <div class="navigation-container__slidedown"></div>
+    </div>
+  </div>
+     <div class="section section--bg-beige">
+    <div class="section__inner-container" id="site-search">
+      <div class="site-search">
+  <form name="search_form_SearchBox" method="get"
+    action="/vmpSite/search/">
+    <div class="input-group">
+      <label><span class="sr-only">Skriv inn et ord du ønsker å søke etter</span>
+        <input type="text"          
+          class="form-control js-site-search-input" 
+          name="q"
+          value=""
+          maxlength="100"
+          placeholder="Søk etter"
+          data-options='{"autocompleteUrl" : "/vmpSite/search/autocomplete/SearchBox","minCharactersBeforeRequest" : "3","waitTimeBeforeRequest" : "500","displayProductImages" : true}'>
+          </label>
+      <span class="input-group-btn"> <button class="btn btn-link" type="submit">
+            <span class="icon-sok"></span>
+            <span class="sr-only">Start søk i nettsiden</span>
+          </button>
+        </span>
+    </div>
+  </form>
+
+</div>
+</div>
+  </div>
+</header>
+
+<main class="site__body">
+        <div id="page" data-currency-iso-code="NOK">
+          <div class="article-page">
+    
+    <div class="section section--always-margin section--breadcrumbs">
+      <div class="section__inner-container">
+        <ol class="breadcrumbs" aria-label="brÃ¸dsmulesti" role="navigation">
+  <li>
+    <a href="/vmpSite/">Forsiden</a>
+  </li>
+
+  <li class="active">Bruk av produkt- og butikkdata fra Vinmonopolet</li>
+      </ol>
+</div>
+    </div>
+
+    <div class="yCmsContentSlot section section-1 section--content">
+<div class="section__inner-container">
+        <article class="article"> 
+
+  <h1 class="article__headline">Bruk av produkt- og butikkdata fra Vinmonopolet</h1>
+
+  <p class="article__leadin">
+    Informasjon om Vinmonopolets produkter og butikker er fritt tilgjengelig for bruk i egne tjenester. Her finner du datafiler i CSV-format og vilkår for bruk av informasjonen.</p>
+
+  <div class="article__credits-and-tools">
+    <div class="article__credit article__credit_author">
+      <img title="" alt="" src="/medias/sys_master/images/images/h64/hbb/8815216656414/Svein-Strand-nov-2014-c-Eivor-Eriksen-fotofolk-fri-bruk-1-lite-kvadrat.jpg">
+      <p>
+        <span>Tekst:</span><br />
+        Svein Strand</p>
+    </div>
+    <div class="article__credit article__credit_photo">
+      <img src="/_ui/responsive/theme-vmp/images/foto.png" alt="foto" />
+      <p>
+        <span>Foto:</span><br />
+        </p>
+    </div>
+  
+  </div>
+
+</article></div>
+    </div><div class="yCmsContentSlot section section-2">
+<div class="section__inner-container">
+        <div class="article-page__content">
+          <div class="content"><p>Filene inneholder informasjon som ogs&aring; er tilgjengelig her p&aring; www.vinmonopolet.no. Datagrunnlaget er det samme som benyttes i v&aring;re egne l&oslash;sninger. Informasjonen presenteres i to CSV-filer, &eacute;n med produktinformasjon og &eacute;n med opplysninger om v&aring;re butikker. Filene oppdateres daglig, og er merket med dato og klokkeslett for uttrekk.</p><h3>Produktfilen inneholder informasjon om varene i Vinmonopolet basis-, parti-, test- og bestillingsutvalg:</h3><p>Beskrivelse av produktene i bestillingsutvalget er foretatt av grossistene. Produktbeskrivelsene av varer i basis-, parti- og testutvalget er, etter sensorisk pr&oslash;ving og kvalitetskontroll, foretatt av Vinmonopolet. Filen inneholder ikke informasjon om spesialprodukter eller produkter i tilleggsutvalget. (Informasjon om v&aring;re utvalg). Det er ikke samsvar mellom antall produkter i nettbutikken og antall produkter i filen. Dette skyldes at utg&aring;tte varer med lagerbeholdning i butikk eller nettbutikkens lager vises i nettbutikken, men ikke i filen.</p><p><a href="https://www.vinmonopolet.no/medias/sys_master/products/products/hbc/hb0/8834253127710/produkter.csv">Produktinformasjon (CSV-fil)&nbsp;</a></p><div><em><a href="https://www.vinmonopolet.no/medias/sys_master/root/hf9/h9b/8834241167390/Feltbeskrivelser-produktinformasjonsfil-v.-1.0.pdf">Du finner st&oslash;ttedokument med feltbeskrivelser for produktinformasjon her</a>.</em></div><div>&nbsp;</div><h3>Butikkfilen inneholder opplysninger om butikknavn, adresse, kategori og &aring;pningstider:</h3><div>&nbsp;</div><div><a href="https://www.vinmonopolet.no/medias/sys_master/locations/locations/h3c/h4a/8834253946910.csv">Butikkinformasjon (CSV-fil)</a></div><div>&nbsp;</div><div><em><a href="https://www.vinmonopolet.no/medias/sys_master/root/hc2/h27/8834241232926/Feltbeskrivelser-butikkinformasjonsfil-v.-1.0.pdf">Du finner st&oslash;ttedokument med feltbeskrivelser for butikkinformasjon her</a>.</em></div><div>&nbsp;</div><h3>Vinmonopolets vilk&aring;r for bruk av informasjonen</h3><div>V&aring;r intensjon er &aring; holde tjenesten tilgjengelig og oppdatert til enhver tid, men vi tar ikke ansvar for oppetid og tilgjengelighet. Vi tar dessuten forbehold om feil i dataene.</div><div>&nbsp;</div><div>Vinmonopolet yter ikke teknisk bistand, men vi vil gj&oslash;re v&aring;rt fremste for &aring; besvare henvendelser ang&aring;ende tjenesten. Ta kontakt med oss p&aring; telefon 04560 eller kundesenter@vinmonopolet.no. Dersom du planlegger l&oslash;sninger som vil f&oslash;re til store belastninger p&aring; v&aring;re systemer ber vi deg kontakte oss p&aring; forh&aring;nd.</div><div>&nbsp;</div><div>Vinmonopolets virksomhet reguleres av omfattende lovgivning og v&aring;rt alkoholpolitiske oppdrag. P&aring; bakgrunn av dette stiller vi enkelte krav til hvordan informasjonen kan benyttes av eksterne akt&oslash;rer:</div><div>&nbsp;</div><ul><li>Bruk av dataene kan ikke skje p&aring; en slik m&aring;te at det kan se ut til at Vinmonopolet er avsender av markedsf&oslash;ringsbudskap eller andre budskap som kan v&aelig;re skadelig for v&aring;rt omd&oslash;mme eller v&aring;r virksomhet. Informasjon fra Vinmonopolet skal heller ikke brukes i sammenhenger som er i strid med Alkoholloven, herunder alkoholreklameforbudet, Vinmonopolloven eller andre gjeldende lover og forskrifter.</li><li>Ved lenking til v&aring;r nettbutikk skal det tydelig fremkomme at all bestilling, kj&oslash;p og utlevering skjer fra, av eller hos Vinmonopolet eller v&aring;re samarbeidspartnere.</li><li>Vinmonopolet forholder seg retten til n&aring;r som helst &aring; gj&oslash;re endringer i disse retningslinjene, uten forvarsel. De som &oslash;nsker &aring; benytte informasjon fra Vinmonopolet eller er selv pliktige til &aring; holde seg oppdatert p&aring; de til enhver tid gjeldende retningslinjene.</li></ul><div><a href="http://www.vinmonopolet.no/bruk-av-tekst-og-bilder-fra-vinmonopolet"><br type="_moz" /></a></div><div><a href="https://www.vinmonopolet.no/logo-og-bilder">Se utfyllende informasjon om v&aring;re vilk&aring;r for bruk av data fra Vinmonopolet her</a>.</div><div>&nbsp;</div></div></div>
+      </div>
+    <div class="section__inner-container">
+        <div class="article-page__content">
+          <div class="related-files-component">
+<ul>
+    <li><a href="/medias/sys_master/root/hf9/h9b/8834241167390/Feltbeskrivelser-produktinformasjonsfil-v.-1.0.pdf">Feltbeskrivelser produktinformasjonsfil v. 1.0</a></li>
+    <li><a href="/medias/sys_master/root/hc2/h27/8834241232926/Feltbeskrivelser-butikkinformasjonsfil-v.-1.0.pdf">Feltbeskrivelser butikkinformasjonsfil v. 1.0</a></li>
+    <li><a href="/medias/sys_master/locations/locations/h3c/h4a/8834253946910.csv">butikker.csv</a></li>
+    <li><a href="/medias/sys_master/products/products/hbc/hb0/8834253127710/produkter.csv">produkter.csv</a></li>
+    </ul>
+</div></div>
+      </div>
+    </div><div class="yCmsContentSlot section section-3 related-articles">
+</div></div>
+  
+</div>
+      </main>
+      <footer class="site__footer" id="site-footer">
+  <div class="section">
+    <div class="section__inner-container">
+      <div class="footer">
+        <div class="footer_column-0">
+              <div class="footer__section ContactUsNavNode" >
+                    <h2 class="footer__headline" tabindex="0" aria-controls="ContactUsNavNode">Vinmonopolets Kundesenter</h2>
+                    <ul id="ContactUsNavNode" class="link-list" aria-expanded="false">
+                      <li class="OpeningHoursLink">
+                                 <p>Åpningstider:<br/>man, tir, tor og fre: 08:00 - 18:00<br/>ons: 09:00 - 18:00 <br/> lør: 09:00 - 15:00</p></li>
+                            <li class="CallUsLink">
+                                <a href='tel:04560'>04560</a> / <a href='tel:22015000'>22 01 50 00</a><p>
+                                  Vi kan ringe deg tilbake alle hverdager mellom kl 9 og 16&nbsp;
+                                  <a class="js-open-call-us-window" href="http://webchat.vinmonopolet.no/CC1/webcmb/index.php?sid=11&lang=no" target="_blank" rel="noopener"/>Ring meg</a>
+                                </p>
+                              </li>
+                            <li class="yCmsComponent SendUsEmailLink">
+<a href="mailto:kundesenter@vinmonopolet.no"  title="kundesenter@vinmonopolet.no" >kundesenter@vinmonopolet.no<span class='link-list__postfix'></span></a></li><li class="yCmsComponent ChatWithUsLink">
+<a href="/vmpSite/customer-relations/chat"  title="Chatten er åpen" >Chatten er åpen<span class='link-list__postfix'></span></a><div><p>Vi er tilgjengelige på chat alle hverdager mellom kl 9 og 16</p></div></li><li class="yCmsComponent VmpOnFacebookLink">
+<a href="https://www.facebook.com/Vinmonopolet"  title="Vinmonopolet på Facebook" >Vinmonopolet på Facebook<span class='link-list__postfix'></span></a></li></ul>
+                  </div>
+                </div>
+              <div class="footer_column-1">
+              <div class="footer__section AboutUsNavNode" >
+                    <h2 class="footer__headline" tabindex="0" aria-controls="AboutUsNavNode">Om Vinmonopolet</h2>
+                    <ul id="AboutUsNavNode" class="link-list" aria-expanded="false">
+                      <li class="yCmsComponent AboutUsInNumbersLink">
+<a href="/vmpSite/okonomi-og-tall"  title="Økonomi, tall og data" >Økonomi, tall og data<span class='link-list__postfix'></span></a></li><li class="yCmsComponent item_00000BKO">
+<a href="/vmpSite/ledelse"  title="Vinmonopolets ledelse" >Vinmonopolets ledelse<span class='link-list__postfix'></span></a></li><li class="yCmsComponent OpenPositionsLink">
+<a href="http://www.jobbnorge.no/ledige-stillinger/vinmonopolet"  title="Ledige stillinger" >Ledige stillinger<span class='link-list__postfix'></span></a></li><li class="yCmsComponent OurResponsibilitiesLink">
+<a href="/vmpSite/samfunnsansvar"  title="Samfunnsansvar" >Samfunnsansvar<span class='link-list__postfix'></span></a></li><li class="yCmsComponent Varslingskanal for interne varslere">
+<a href="/vmpSite/varslingskanal"  title="Varslingskanal for eksterne varslere" >Varslingskanal for eksterne varslere<span class='link-list__postfix'></span></a></li><li class="yCmsComponent in-english">
+<a href="/vmpSite/english-category"  title="In English" >In English<span class='link-list__postfix'></span></a></li></ul>
+                  </div>
+                <div class="footer__section BuyInformationNavNode" >
+                    <h2 class="footer__headline" tabindex="0" aria-controls="BuyInformationNavNode">Kjøpsinformasjon</h2>
+                    <ul id="BuyInformationNavNode" class="link-list" aria-expanded="false">
+                      <li class="yCmsComponent PersonalInformationRulesLink">
+<a href="/vmpSite/personvern"  title="Personvern" >Personvern<span class='link-list__postfix'></span></a></li><li class="yCmsComponent RulesInformationLink">
+<a href="/vmpSite/salgsbetingelser"  title="Salgsbetingelser" >Salgsbetingelser<span class='link-list__postfix'></span></a></li><li class="yCmsComponent DeliveryInformationLink">
+<a href="/vmpSite/levering"  title="Levering" >Levering<span class='link-list__postfix'></span></a></li><li class="yCmsComponent informasjonskapsler-lenke">
+<a href="/vmpSite/informasjonskapsler"  title="Informasjonskapsler" >Informasjonskapsler<span class='link-list__postfix'></span></a></li><li class="yCmsComponent om-appene-lenke">
+<a href="/vmpSite/om-appene"  title="Vinmonopolets apper for smarttelefon" >Vinmonopolets apper for smarttelefon<span class='link-list__postfix'></span></a></li></ul>
+                  </div>
+                <div class="footer__section CustomerServiceNavNode" >
+                    <h2 class="footer__headline" tabindex="0" aria-controls="CustomerServiceNavNode">Kundeservice</h2>
+                    <ul id="CustomerServiceNavNode" class="link-list" aria-expanded="false">
+                      <li class="yCmsComponent WineAuctionsLink">
+<a href="/vmpSite/spesialbutikk-og-vinauksjon"  title="Spesialbutikk og vinauksjoner" >Spesialbutikk og vinauksjoner<span class='link-list__postfix'></span></a></li><li class="yCmsComponent item_00000HQX">
+<a href="/vmpSite/vinkurs"  title="Vinkurs med Vinmonopolet" >Vinkurs med Vinmonopolet<span class='link-list__postfix'></span></a></li><li class="yCmsComponent item_000005EG">
+<a href="/vmpSite/spesialbestilling-og-privatimport"  title="Spesialbestilling og privatimport" >Spesialbestilling og privatimport<span class='link-list__postfix'></span></a></li><li class="yCmsComponent SuppliersLink">
+<a href="/vmpSite/leverandorer-kategoriside"  title="Informasjon for leverandører" >Informasjon for leverandører<span class='link-list__postfix'></span></a></li><li class="yCmsComponent klagenemnda-lenke">
+<a href="/vmpSite/klagenemnda"  title="Avgjørelser fra klagenemnda" >Avgjørelser fra klagenemnda<span class='link-list__postfix'></span></a></li><li class="yCmsComponent GiftcardBalanceLink">
+<a href="/vmpSite/giftcard-balance-check"  title="Saldo på gavekort" >Saldo på gavekort<span class='link-list__postfix'></span></a></li></ul>
+                  </div>
+                <div class="footer__section PressNavNode" >
+                    <h2 class="footer__headline" tabindex="0" aria-controls="PressNavNode">Presse</h2>
+                    <ul id="PressNavNode" class="link-list" aria-expanded="false">
+                      <li class="yCmsComponent PressLoginLink">
+<a href="/vmpSite/vmp-presse"  title="For vinpressen" >For vinpressen<span class='link-list__postfix'></span></a></li><li class="yCmsComponent PressMessagesLink">
+<a href="/vmpSite/pressemeldinger"  title="Pressemeldinger" >Pressemeldinger<span class='link-list__postfix'></span></a></li><li class="yCmsComponent LogosAndImagesLink">
+<a href="/vmpSite/logo-og-bilder"  title="Logo og bilder" >Logo og bilder<span class='link-list__postfix'></span></a></li><li class="yCmsComponent Salgstall">
+<a href="/vmpSite/salgstall"  title="Salgstall" >Salgstall<span class='link-list__postfix'></span></a></li></ul>
+                  </div>
+                </div>
+              </div>
+    </div>
+  </div>
+  </footer></div>
+  <form name="accessiblityForm">
+    <input type="hidden" id="accesibility_refreshScreenReaderBufferField" name="accesibility_refreshScreenReaderBufferField" value=""/>
+  </form>
+  <div id="ariaStatusMsg" class="skip" role="status" aria-relevant="text" aria-live="polite"></div>
+
+  <script type="text/javascript">
+    /*<![CDATA[*/
+    
+    var ACC = { config: {} };
+      ACC.config.contextPath = "";
+      ACC.config.encodedContextPath = "/vmpSite";
+      ACC.config.commonResourcePath = "/_ui/responsive/common";
+      ACC.config.themeResourcePath = "/_ui/responsive/theme-vmp";
+      ACC.config.siteResourcePath = "/_ui/responsive/site-vmpSite";
+      ACC.config.rootPath = "/_ui/responsive";  
+      ACC.config.CSRFToken = "e9a708e1-0a01-467f-8831-39d4a6c06df5";
+      ACC.pwdStrengthVeryWeak = 'Veldig svakt';
+      ACC.pwdStrengthWeak = 'Svakt';
+      ACC.pwdStrengthMedium = 'Medium';
+      ACC.pwdStrengthStrong = 'Sterkt';
+      ACC.pwdStrengthVeryStrong = 'Veldig sterkt';
+      ACC.pwdStrengthUnsafePwd = 'password.strength.unsafepwd';
+      ACC.pwdStrengthTooShortPwd = 'For kort';
+      ACC.pwdStrengthMinCharText = 'Passordet må bestå av minst %d bokstaver';
+      ACC.accessibilityLoading = 'Laster... Vennligst vent...';
+      ACC.accessibilityStoresLoaded = 'Butikker lastet';
+      ACC.config.googleApiKey="gme-vinmono";
+      ACC.config.googleApiVersion="3.7";
+
+      ACC.user = {};
+      
+      ACC.autocompleteUrl = '/vmpSite/search/autocompleteSecure';
+      
+      
+    /*]]>*/
+  </script>
+  <script type="text/javascript">
+  /*<![CDATA[*/
+  ACC.addons = {};  //JS holder for addons properties
+      
+  
+    ACC.addons.vmpcheckoutaddon = [];
+    
+    ACC.addons.b2ccheckoutaddon = [];
+    
+        ACC.addons.b2ccheckoutaddon['key.2'] = 'value 2';
+      
+        ACC.addons.b2ccheckoutaddon['key.1'] = 'value 1';
+      
+    ACC.addons.wishlistaddon = [];
+    
+  /*]]>*/
+</script>
+<script type="text/javascript" src="/_ui/shared/js/generatedVariables.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- so far only guest checkout email enable/disable -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/combined.js?id=ae7e3c5015867b9_1"></script>
+
+</body>
+
+</html>

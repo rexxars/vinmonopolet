@@ -20,6 +20,7 @@ describe('vinmonopolet-stream', function() {
 
             polet
                 .getProductStream()
+                .once('error', done)
                 .once('data', function(product) {
                     expect(product).to.be.an.instanceOf(Product);
                 })
@@ -35,6 +36,7 @@ describe('vinmonopolet-stream', function() {
 
             polet
                 .getProductStream()
+                .once('error', done)
                 .once('data', function(product) {
                     expect(product.title).to.equal('Løiten Linie');
                     expect(product.region).to.equal('Øvrige');
@@ -50,7 +52,7 @@ describe('vinmonopolet-stream', function() {
             var mock = getProductStreamMock();
 
             var last;
-            polet.getProductStream().on('data', function(product) {
+            polet.getProductStream().once('error', done).on('data', function(product) {
                 last = product;
             }).on('end', function() {
                 expect(last.sku).to.equal(2002);
@@ -185,7 +187,7 @@ describe('vinmonopolet-stream', function() {
             var mock = getProductStreamMock(true);
 
             var products = [];
-            polet.getProductStream().on('data', function(product) {
+            polet.getProductStream().once('error', done).on('data', function(product) {
                 products.push(product);
             }).on('end', function() {
                 expect(products).to.have.length(11);
@@ -196,6 +198,18 @@ describe('vinmonopolet-stream', function() {
     });
 });
 
+function getStreamUrlsMock() {
+    var stream = fs.createReadStream(
+        path.join(__dirname, 'fixtures', 'datadeling.html')
+    );
+
+    return getNock()('https://www.vinmonopolet.no')
+        .get('/datadeling')
+        .reply(200, function() {
+            return stream;
+        });
+}
+
 function getProductStreamMock(broken) {
     var stream = fs.createReadStream(
         path.join(
@@ -205,8 +219,9 @@ function getProductStreamMock(broken) {
         )
     );
 
-    return getNock()('http://www.vinmonopolet.no')
-        .get('/api/produkter')
+    getStreamUrlsMock();
+    return getNock()('https://www.vinmonopolet.no')
+        .get('/medias/sys_master/products/products/hbc/hb0/8834253127710/produkter.csv')
         .reply(200, function() {
             return stream;
         });
@@ -217,8 +232,9 @@ function getStoreStreamMock() {
         path.join(__dirname, 'fixtures', 'stores-chunk.csv')
     );
 
-    return getNock()('http://www.vinmonopolet.no')
-        .get('/api/butikker')
+    getStreamUrlsMock();
+    return getNock()('https://www.vinmonopolet.no')
+        .get('/medias/sys_master/locations/locations/h3c/h4a/8834253946910.csv')
         .reply(200, function() {
             return stream;
         });
