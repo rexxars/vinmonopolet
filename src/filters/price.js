@@ -1,14 +1,23 @@
-'use strict';
+function priceFilter(price) {
+  if (!price) {
+    return null
+  }
 
-module.exports = function priceFilter(price) {
-    return Number(
-        String(price)
-            .trim()
-            .replace(/^Kr\.\s*/, '')
-            .replace(/\./g, '')
-            .replace(/,\-$/, '')
-            .replace(/,/g, '.')
-            .replace(/\s/g, '')
-            .replace(/(\d+(\.\d*)?)[\s\S]*/, '$1')
-    );
-};
+  if (price.value) {
+    return price.value
+  }
+
+  return Number(
+    String(price)
+      .trim()
+      .replace(/^Kr\.\s*/, '')
+      .replace(/\s*kr/i, '')
+      .replace(/\./g, '')
+      .replace(/,-$/, '')
+      .replace(/,/g, '.')
+      .replace(/\s/g, '')
+      .replace(/(\d+(\.\d*)?)[\s\S]*/, '$1')
+  )
+}
+
+module.exports = priceFilter

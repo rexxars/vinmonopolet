@@ -1,44 +1,50 @@
-'use strict';
-
 function normalizeNumber(number) {
-    var num = String(number);
-
-    return (
-        num
-            .replace(/\s/g, '')
-            .replace(/,/g, '.')
-    );
+  const num = String(number)
+  return num.replace(/,/g, '.').replace(/\s/g, '').replace(/,/g, '.')
 }
 
 function numberFilter(number) {
-    var num = String(number);
-    if (num === '') {
-        return null;
-    }
+  if (!number) {
+    return null
+  }
 
-    return Number(normalizeNumber(number));
+  if (number.value) {
+    return number.value
+  }
+
+  const num = String(number)
+  if (num === '') {
+    return null
+  }
+
+  if (num.indexOf('-') !== -1) {
+    return num.split('-').map(numberFilter).join('-')
+  }
+
+  return Number(normalizeNumber(number))
 }
 
-numberFilter.greedy = function(number) {
-    var num = normalizeNumber(number);
-    if (num === '') {
-        return null;
+numberFilter.greedy = function (number) {
+  const num = normalizeNumber(number)
+  if (num === '') {
+    return null
+  }
+
+  const normalized = num
+    .replace(/[^\d.]/g, '')
+    .replace(/(^\.+|\.+$)/g, '')
+
+  return Number(normalized)
+}
+
+numberFilter.nullify = function (nulls) {
+  return function (number) {
+    if (nulls.indexOf(number) > -1) {
+      return null
     }
 
-    return Number(num
-        .replace(/[^\d\.]/g, '')
-        .replace(/(^\.+|\.+$)/g, '')
-    );
-};
+    return numberFilter(number)
+  }
+}
 
-numberFilter.nullify = function(nulls) {
-    return function(number) {
-        if (nulls.indexOf(number) > -1) {
-            return null;
-        }
-
-        return numberFilter(number);
-    };
-};
-
-module.exports = numberFilter;
+module.exports = numberFilter

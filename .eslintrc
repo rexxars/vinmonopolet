@@ -1,3 +1,4 @@
 {
-    "extends": "vaffel"
+  "env": {"node": true},
+  "extends": "bengler"
 }

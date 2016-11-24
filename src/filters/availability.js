@@ -1,11 +1,9 @@
-'use strict';
-
-var Availability = require('../models/availability');
+const Availability = require('../models/availability')
 
 function filterStoreAvailability(availability) {
-    return new Availability(availability);
+  return new Availability(availability)
 }
 
 module.exports = function availabilityFilter(stores) {
-    return stores.map(filterStoreAvailability);
-};
+  return stores.map(filterStoreAvailability)
+}
