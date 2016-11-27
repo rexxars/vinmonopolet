@@ -8,6 +8,8 @@ const vinmonopolet = require('../src/index')
 const filters = require('../src/filters')
 const request = require('../src/util/request')
 const productUrl = require('../src/util/productUrl')
+const streamMethods = require('../src/stream')
+const noBrowser = require('../src/no-browser')
 require('hard-rejection/register')
 
 /* Don't depend on mocha globals */
@@ -431,5 +433,14 @@ describe('vinmonopolet', function () {
     it('can perform raw requests, returning plain body', () =>
       expect(request.raw('https://www.vinmonopolet.no/')).to.eventually.contain('<title>')
     )
+  })
+
+  describe('browser build', () => {
+    it('throws if trying to use any of the stream methods', () => {
+      Object.keys(streamMethods).forEach(method => {
+        expect(noBrowser[method]).to.be.a('function')
+        expect(noBrowser[method]).to.throw(/not supported in browser/)
+      })
+    })
   })
 })
