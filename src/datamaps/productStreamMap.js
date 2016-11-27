@@ -6,6 +6,7 @@ const clockToPrctFilter = require('../filters/clockToPercentage')
 const trimFilter = require('../filters/trim')
 const numberFilter = require('../filters/number')
 const foodPairingFilter = require('../filters/foodPairing')
+const productUrl = require('../util/productUrl')
 
 module.exports = {
   Varenummer: ['code'],
@@ -42,5 +43,5 @@ module.exports = {
   Distributør: ['distributor', textFilter],
   Emballasjetype: ['containerType', textFilter],
   Korktype: ['cork', textFilter],
-  Vareurl: ['url']
+  Vareurl: ['url', productUrl]
 }
