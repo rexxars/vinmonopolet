@@ -1,3 +1,4 @@
+const objectAssign = require('object-assign')
 const Product = require('../models/Product')
 const Pagination = require('../models/Pagination')
 const FacetValue = require('../models/FacetValue')
@@ -11,7 +12,7 @@ const sortOrders = ['asc', 'desc']
 const sortTakesOrder = ['name', 'price']
 
 function getProducts(opts) {
-  const options = Object.assign({}, defaults, opts || {})
+  const options = objectAssign({}, defaults, opts || {})
   const query = {
     pageSize: options.limit,
     currentPage: Math.max(0, options.page - 1),
@@ -52,18 +53,14 @@ function getProducts(opts) {
     return req.then(res => Number(res.headers.get('X-Total-Count')))
   }
 
-  return req
-    .then(res => ({
-      products: (res.products || []).map(i => new Product(i)),
-      pagination: new Pagination(res.pagination, options, getProducts)
-    }))
-    .then(res => {
-      return options.pagination ? res : res.products
-    })
+  return req.then(res => ({
+    products: (res.products || []).map(i => new Product(i)),
+    pagination: new Pagination(res.pagination, options, getProducts)
+  }))
 }
 
 getProducts.count = opts => {
-  return getProducts(Object.assign({}, opts, {onlyCount: true}))
+  return getProducts(objectAssign({}, opts, {onlyCount: true}))
 }
 
 function getSortParam(sort) {

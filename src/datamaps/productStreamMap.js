@@ -35,7 +35,7 @@ module.exports = {
   Alkohol: ['abv', numberFilter.greedy],
   Sukker: ['sugar', numberFilter.nullify(['Ukjent'])],
   Syre: ['acid', numberFilter.nullify(['Ukjent'])],
-  Lagringsgrad: ['matured', textFilter],
+  Lagringsgrad: ['storable', textFilter],
   Produsent: ['mainProducer', textFilter],
   Grossist: ['wholesaler', textFilter],
   Distributor: ['distributor', textFilter],

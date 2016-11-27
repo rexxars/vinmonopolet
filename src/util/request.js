@@ -1,4 +1,5 @@
 const {fetch} = require('fetch-ponyfill')()
+const objectAssign = require('object-assign')
 const qs = require('query-string')
 const promiseProps = require('promise-props')
 
@@ -28,7 +29,7 @@ request.get = (path, options) =>
     })
 
 request.head = (path, options) =>
-  request(path, Object.assign({}, options, {request: {method: 'HEAD'}}))
+  request(path, objectAssign({}, options, {request: {method: 'HEAD'}}))
 
 request.raw = url => fetch(url).then(res => res.text())
 

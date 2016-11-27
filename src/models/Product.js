@@ -1,7 +1,7 @@
 /* eslint-disable max-statements */
 const productMap = require('../datamaps/productMap')
 const streamMap = require('../datamaps/productStreamMap')
-const camelcase = require('lodash.camelcase')
+const camelcase = require('../util/camelcase')
 
 function Product(product) {
   // Core product info
@@ -35,7 +35,7 @@ function Product(product) {
   this.color = null
   this.aroma = null
   this.taste = null
-  this.matured = null
+  this.storable = null
   this.foodPairing = null
   this.rawMaterial = null
   this.sugar = null

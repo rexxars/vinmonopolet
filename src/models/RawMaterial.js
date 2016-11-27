@@ -1,7 +1,7 @@
 function RawMaterial(mat) {
   this.id = mat.id
   this.name = mat.name
-  this.percentage = Number(mat.percentage)
+  this.percentage = mat.percentage ? Number(mat.percentage) : null
 }
 
 RawMaterial.prototype.toString = function () {

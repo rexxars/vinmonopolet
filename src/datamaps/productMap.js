@@ -26,6 +26,7 @@ module.exports = {
   sweetness: ['sweetness', clockToPercentage],
   fullness: ['fullness', clockToPercentage],
   sulfates: ['tannins', clockToPercentage],
+  matured: ['storable'],
   images: ['images', toImages],
   alcohol: ['abv', number],
   volume: ['containerSize', number],

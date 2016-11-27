@@ -15,7 +15,8 @@ const describe = mocha.describe
 const it = mocha.it
 
 /* Helper functions */
-const first = res => res[0]
+const first = res => res.products[0]
+const productsOnly = res => res.products
 
 const getProductCode = () => vinmonopolet
   .getProducts({sort: ['price', 'desc'], limit: 1})
@@ -34,19 +35,19 @@ describe('vinmonopolet', function () {
   this.timeout(20000)
 
   describe('getProducts', () => {
-    it('can get basic product listing, returns promise of array', () =>
-      expect(vinmonopolet.getProducts())
+    it('can get basic product listing, returns promise', () =>
+      expect(vinmonopolet.getProducts().then(productsOnly))
         .to.eventually.have.length.above(0)
     )
 
     it('returns array of Product instances', () =>
-      vinmonopolet.getProducts().then(products => {
+      vinmonopolet.getProducts().then(productsOnly).then(products => {
         products.forEach(prod => expect(prod).to.be.an.instanceOf(vinmonopolet.Product))
       })
     )
 
     it('can apply a limit', () =>
-      expect(vinmonopolet.getProducts({limit: 1}))
+      expect(vinmonopolet.getProducts({limit: 1}).then(productsOnly))
         .to.eventually.have.lengthOf(1)
     )
 
@@ -58,7 +59,7 @@ describe('vinmonopolet', function () {
     }))
 
     it('can apply sorting by relevance (as a string)', () =>
-      expect(vinmonopolet.getProducts({sort: 'relevance', limit: 1}))
+      expect(vinmonopolet.getProducts({sort: 'relevance', limit: 1}).then(productsOnly))
         .to.eventually.have.length.above(0)
     )
 
@@ -109,16 +110,15 @@ describe('vinmonopolet', function () {
     })
 
     it('can apply facet to limit result scope', () =>
-      vinmonopolet.getProducts({facet: vinmonopolet.Facet.Category.MEAD}).then(res => {
-        res.forEach(prod => expect(prod.productType).to.equal('Mjød'))
-      })
+      vinmonopolet.getProducts({facet: vinmonopolet.Facet.Category.MEAD})
+        .then(productsOnly)
+        .then(res => res.forEach(prod => expect(prod.productType).to.equal('Mjød')))
     )
 
     it('can apply facets to limit result scope', () =>
-      vinmonopolet.getProducts({facets: [
-        vinmonopolet.Facet.Category.BEER,
-        'mainCountry:norge'
-      ]}).then(res => res.forEach(prod => expect(prod.productType).to.equal('Øl')))
+      vinmonopolet.getProducts({facets: [vinmonopolet.Facet.Category.BEER, 'mainCountry:norge']})
+        .then(productsOnly)
+        .then(res => res.forEach(prod => expect(prod.productType).to.equal('Øl')))
     )
 
     it('throws if trying to apply invalid facet value', () => {
@@ -128,20 +128,20 @@ describe('vinmonopolet', function () {
     })
 
     it('can apply a freetext query', () =>
-      vinmonopolet.getProducts({query: 'valpolicella', limit: 3}).then(res => {
+      vinmonopolet.getProducts({query: 'valpolicella', limit: 3}).then(productsOnly).then(res => {
         expect(res).to.have.length.above(0)
         res.forEach(prod => expect(prod.name.toLowerCase()).to.include('valpolicella'))
       })
     )
 
     it('returns empty array if no results are found', () =>
-      vinmonopolet.getProducts({query: `nonexistant${Date.now()}`}).then(res => {
+      vinmonopolet.getProducts({query: `nonexistant${Date.now()}`}).then(productsOnly).then(res => {
         expect(res).to.have.lengthOf(0)
       })
     )
 
-    it('can be told to return pagination info', () =>
-      vinmonopolet.getProducts({limit: 1, sort: ['name', 'asc'], pagination: true}).then(res => {
+    it('returns pagination info', () =>
+      vinmonopolet.getProducts({limit: 1, sort: ['name', 'asc']}).then(res => {
         expect(res.products).to.be.an('array').and.have.lengthOf(1)
         expect(res.pagination).to.be.an.instanceOf(vinmonopolet.Pagination)
         expect(res.pagination).to.have.property('currentPage', 0)
@@ -157,22 +157,22 @@ describe('vinmonopolet', function () {
     it('can use the pagination info to traverse next/previous page', () => {
       const chunks = []
       const getNext = res => {
-        chunks.push(first(res.products))
+        chunks.push(res.products[0])
         return res.pagination.next()
       }
 
       const getPrev = res => {
-        chunks.push(first(res.products))
+        chunks.push(res.products[0])
         return res.pagination.previous()
       }
 
       const assertLast = res => {
         const productNames = chunks.map(prod => prod.name)
         expect(dupes(productNames)).to.have.lengthOf(0, 'should not have any duplicates when paginating')
-        expect(first(res.products).name).to.equal(chunks[2].name, 'prev should go back to previous page')
+        expect(res.products[0].name).to.equal(chunks[2].name, 'prev should go back to previous page')
       }
 
-      return vinmonopolet.getProducts({limit: 1, pagination: true})
+      return vinmonopolet.getProducts({limit: 1})
         .then(getNext)
         .then(getNext)
         .then(getNext)
@@ -217,7 +217,6 @@ describe('vinmonopolet', function () {
       expect(vinmonopolet.getProducts.count({
         sort: ['name', 'desc'],
         query: 'valpolicella',
-        pagination: true,
         limit: 10,
         page: 2,
         facets: [vinmonopolet.Facet.Category.RED_WINE]
@@ -259,8 +258,8 @@ describe('vinmonopolet', function () {
         expect(norwayFacetValue).to.be.an.instanceOf(vinmonopolet.FacetValue)
 
         return vinmonopolet.getProducts({limit: 3, facet: norwayFacetValue})
-      }).then(products => {
-        products.forEach(prod => expect(prod).to.have.deep.property('mainCountry.name', 'Norge'))
+      }).then(res => {
+        res.products.forEach(prod => expect(prod).to.have.deep.property('mainCountry.name', 'Norge'))
       })
     )
   })
@@ -269,8 +268,7 @@ describe('vinmonopolet', function () {
     it('takes the same options as getProducts', () =>
       vinmonopolet.searchProducts('valpolicella', {
         limit: 3,
-        sort: ['price', 'asc'],
-        pagination: true
+        sort: ['price', 'asc']
       }).then(res => {
         res.products.reduce((prevPrice, prod) => {
           expect(prod.price).to.be.above(prevPrice)
@@ -325,6 +323,7 @@ describe('vinmonopolet', function () {
   describe('getProductByBarcode', () => {
     it('fetches products by barcode', () =>
       vinmonopolet.getProducts({limit: 5, facets: [vinmonopolet.Facet.Category.BEER, 'mainCountry:norge']})
+        .then(productsOnly)
         .then(products => Promise.all(products.map(product => product.populate())))
         .then(products => products.find(prod => prod.barcode))
         .then(product => promiseProps({

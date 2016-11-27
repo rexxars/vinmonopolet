@@ -1,3 +1,5 @@
+const objectAssign = require('object-assign')
+
 function Pagination(paging, options, fetcher) {
   this.currentPage = paging.currentPage
   this.pageSize = paging.pageSize
@@ -13,13 +15,13 @@ function Pagination(paging, options, fetcher) {
 
 Pagination.prototype.next = function () {
   return this.fetcher(
-    Object.assign({}, this.options, {page: this.options.page + 1})
+    objectAssign({}, this.options, {page: this.options.page + 1})
   )
 }
 
 Pagination.prototype.previous = function () {
   return this.fetcher(
-    Object.assign({}, this.options, {page: Math.max(0, this.options.page - 1)})
+    objectAssign({}, this.options, {page: Math.max(0, this.options.page - 1)})
   )
 }
 

@@ -1,5 +1,5 @@
 const storeStreamMap = require('../datamaps/storeStreamMap')
-const camelcase = require('lodash.camelcase')
+const camelcase = require('../util/camelcase')
 
 function Store(store) {
   Object.keys(store).forEach(key => {
