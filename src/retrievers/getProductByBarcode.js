@@ -3,7 +3,7 @@ const request = require('../util/request')
 
 function getProductByBarcode(barcode) {
   const query = {fields: 'FULL'}
-  return request(`/products/barCodeSearch/${barcode}`, {query})
+  return request.get(`/products/barCodeSearch/${barcode}`, {query})
     .then(product => new Product(product))
 }
 

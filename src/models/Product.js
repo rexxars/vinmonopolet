@@ -7,7 +7,7 @@ function Product(product) {
   // Core product info
   this.code = product.code
   this.name = product.name
-  this.productType = (product.mainCategory && product.mainCategory.name) || null
+  this.productType = (product.main_category && product.main_category.name) || null
   this.abv = null
   this.url = null
   this.price = null

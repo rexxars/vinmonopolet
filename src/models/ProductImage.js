@@ -13,7 +13,7 @@ ProductImage.prototype.toString = function () {
 }
 
 function guessSizeFromUrl(url) {
-  const [, width, height] = url.match(sizeMatcher) || []
+  const [, width, height] = (url && url.match(sizeMatcher)) || []
   return width && height ? {width: Number(width), height: Number(height)} : null
 }
 

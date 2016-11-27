@@ -30,11 +30,11 @@ function transformStore(store, enc, cb) {
 }
 
 module.exports = {
-  getProductStream() {
+  getProducts() {
     return getCsvStream(csvUrls.products, transformProduct)
   },
 
-  getStoreStream() {
+  getStores() {
     return getCsvStream(csvUrls.stores, transformStore)
   }
 }

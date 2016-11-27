@@ -13,10 +13,6 @@ function numberFilter(number) {
   }
 
   const num = String(number)
-  if (num === '') {
-    return null
-  }
-
   if (num.indexOf('-') !== -1) {
     return num.split('-').map(numberFilter).join('-')
   }

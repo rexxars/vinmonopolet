@@ -7,8 +7,23 @@ const reduceQuery = (query = '') => {
     : query
 }
 
-module.exports = function FacetValue(value, filter = identity) {
+function FacetValue(value, filter = identity) {
   this.name = filter(value.name)
   this.count = value.count
   this.query = reduceQuery(value.query && value.query.query.value)
 }
+
+FacetValue.cooerce = facetVal => {
+  if (facetVal instanceof FacetValue) {
+    return facetVal
+  }
+
+  const val = String(facetVal)
+  if (!/^\w+:\w+$/i.test(val)) {
+    throw new Error('Facet value string must be in <facet>:<value> format')
+  }
+
+  return new FacetValue({query: {query: {value: val}}})
+}
+
+module.exports = FacetValue

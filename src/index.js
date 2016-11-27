@@ -4,6 +4,7 @@ module.exports = {
   Facet: require('./models/Facet'),
   FacetValue: require('./models/FacetValue'),
   FoodPairing: require('./models/FoodPairing'),
+  Pagination: require('./models/Pagination'),
   Product: require('./models/Product'),
   ProductImage: require('./models/ProductImage'),
   ProductStatus: require('./models/ProductStatus'),

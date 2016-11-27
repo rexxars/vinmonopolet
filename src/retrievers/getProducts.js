@@ -1,14 +1,14 @@
 const Product = require('../models/Product')
 const Pagination = require('../models/Pagination')
+const FacetValue = require('../models/FacetValue')
 const request = require('../util/request')
 const arrayify = require('../util/arrayify')
 const oneOfMessage = require('../util/oneOfMessage')
 
-const defaultQuery = ':'
 const defaults = {limit: 50, page: 1}
 const sortFields = ['relevance', 'name', 'price']
 const sortOrders = ['asc', 'desc']
-const sortTakesOrder = ['relevance']
+const sortTakesOrder = ['name', 'price']
 
 function getProducts(opts) {
   const options = Object.assign({}, defaults, opts || {})
@@ -18,32 +18,52 @@ function getProducts(opts) {
     fields: 'FULL',
   }
 
+  // The `query` query parameter (heh) has the following syntax (a bit weird, this);
+  // freeTextSearch:sort:facetKey1:facetValue1:facetKey2:facetValue2
+  const queryParts = {
+    freeTextSearch: '',
+    sort: 'relevance',
+    facets: []
+  }
+
+  if (options.query) {
+    queryParts.freeTextSearch = options.query
+  }
+
   const sort = getSortParam(options.sort)
   if (sort) {
-    query.sort = sort
+    queryParts.sort = sort
   }
 
-  if (opts.query) {
-    query.query = opts.query
+  if (options.facet || options.facets) {
+    const facets = arrayify(options.facet || options.facets)
+    queryParts.facets = facets.map(FacetValue.cooerce).map(val => val.query)
   }
 
-  if (opts.facets) {
-    const facets = arrayify(opts.facet || opts.facets)
-    const existingQuery = (query.query || defaultQuery).split(':')
+  // Serialize actual "query" query param as outlined above
+  query.query = [queryParts.freeTextSearch, queryParts.sort]
+    .concat(queryParts.facets)
+    .join(':')
 
-    query.query = existingQuery
-      .concat(facets.map(val => val.query))
-      .join(':')
+  const getter = request[options.onlyCount ? 'head' : 'get']
+  const req = getter('/products/search', {query})
+
+  if (options.onlyCount) {
+    return req.then(res => Number(res.headers.get('X-Total-Count')))
   }
 
-  return request('/products/search', {query})
+  return req
     .then(res => ({
       products: (res.products || []).map(i => new Product(i)),
       pagination: new Pagination(res.pagination, options, getProducts)
     }))
     .then(res => {
-      return opts.pagination ? res : res.products
+      return options.pagination ? res : res.products
     })
+}
+
+getProducts.count = opts => {
+  return getProducts(Object.assign({}, opts, {onlyCount: true}))
 }
 
 function getSortParam(sort) {
@@ -61,10 +81,10 @@ function getSortParam(sort) {
     throw new Error(`"options.sort[1]" is not valid. ${oneOfMessage(sortOrders)}`)
   }
 
-  const takesOrder = sortTakesOrder.indexOf(sortOrder) !== -1
+  const takesOrder = sortTakesOrder.indexOf(sortField) !== -1
   let newSortOrder = sortOrder
   if (!sortOrder && takesOrder) {
-    newSortOrder = sortOrder[0]
+    newSortOrder = sortOrders[0]
   } else if (sortOrder && !takesOrder) {
     newSortOrder = undefined
   }
