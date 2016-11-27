@@ -11,6 +11,7 @@
   ],
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
+  "umd": "umd/vinmonopolet.min.js",
   "browser": {
     "./lib/stream.js": "./lib/no-browser.js"
   },
@@ -24,7 +25,7 @@
     "minify": "uglifyjs -c -m -- umd/vinmonopolet.js > umd/vinmonopolet.min.js",
     "postpublish": "npm run clean",
     "posttest": "npm run lint",
-    "prepublish": "in-publish && npm prune && npm test || not-in-publish",
+    "prepublish": "in-publish && npm prune && npm run build && npm test || not-in-publish",
     "size": "node -r babel-register src/scripts/print-bundle-size",
     "test": "mocha --reporter spec --recursive"
   },
