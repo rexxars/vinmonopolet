@@ -4,6 +4,7 @@ node_js:
   - '4'
 script:
   - npm run coverage
+  - npm run lint
 after_script:
   - 'npm install codeclimate-test-reporter && cat coverage/lcov.info | codeclimate'
 env:
