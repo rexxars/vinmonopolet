@@ -4,10 +4,6 @@
 
 Extracts information on products and stores from Vinmonopolet
 
-## IMPORTANT NOTE
-
-Currently half broken because of new Vinmonopolet website. `getProductStream()` and `getStoreStream()` should work in 2.0.3, however. Working on a new release that will address full API.
-
 ## Installation
 The `vinmonopolet` library can be installed using [npm](https://npmjs.org/):
 
