@@ -6,7 +6,7 @@ script:
   - npm run coverage
   - npm run lint
 after_script:
-  - 'npm install codeclimate-test-reporter && cat coverage/lcov.info | codeclimate'
+  - 'npm install codeclimate-test-reporter && cat coverage/lcov.info | codeclimate-test-reporter'
 env:
   global:
     - secure: SqgCU5ugyYmoyCd5jyaoWDw3bWtl9bvbretQMmQRQtRVdzVR/2tOaf19D2vMoDFcNZCPIklmjHPldxpF6sQ/1OVM3ZyNQXu9WUUMuQE/VGSzNPYUFnXeH2gdBOKY2O2Cwptsb2Xm2BRD0nPaMC57X/obE6O/Pm9U827mEWvnsqo=
