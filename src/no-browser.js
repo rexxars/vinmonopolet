@@ -3,6 +3,6 @@ const noSupport = () => {
 }
 
 module.exports = {
-  getProductStream: noSupport,
-  getStoreStream: noSupport
+  getProducts: noSupport,
+  getStores: noSupport
 }
