@@ -3,7 +3,7 @@ node_js:
   - '6'
   - '4'
 script:
-  - npm run test-travis
+  - npm run coverage
 after_script:
   - 'npm install codeclimate-test-reporter && cat coverage/lcov.info | codeclimate'
 env:
