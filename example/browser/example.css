@@ -12,7 +12,7 @@ li.active a {cursor: default; color: #fff;}
 .cat-container h2 {padding-left: 10px;}
 .cat-container .clear {margin-bottom: 10px;}
 .paginator {width: 100%; margin: 10px 0;}
-.paginator a {font-size: 1.5em; padding: 10px 20px; display: inline-block;}
+.paginator a {font-size: 1.5em; padding: 10px; display: inline-block;}
 .paginator a:hover {background: #ddd;text-decoration: none;}
 .paginator li {display: inline-block; padding: 0; border: 1px solid #ccc;border-right: 0;}
 .paginator li.active a {background: #2980b9;}
