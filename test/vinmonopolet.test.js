@@ -129,6 +129,12 @@ describe('vinmonopolet', function () {
       }).to.throw(/<facet>:<value>/)
     })
 
+    it('accepts cooercion of valid facet values', () => {
+      expect(() => {
+        vinmonopolet.getProducts({facet: 'mainCategory:rødvin'})
+      }).to.not.throw()
+    })
+
     it('can apply a freetext query', () =>
       vinmonopolet.getProducts({query: 'valpolicella', limit: 3}).then(productsOnly).then(res => {
         expect(res).to.have.length.above(0)

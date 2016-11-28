@@ -19,7 +19,7 @@ FacetValue.cooerce = facetVal => {
   }
 
   const val = String(facetVal)
-  if (!/^\w+:\w+$/i.test(val)) {
+  if (!/^\w+:.+/i.test(val)) {
     throw new Error('Facet value string must be in <facet>:<value> format')
   }
 
