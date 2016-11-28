@@ -1,11 +1,28 @@
 const facetsMap = require('../datamaps/facetsMap')
 const FacetValue = require('./FacetValue')
 
+const displayNames = {
+  'mainCategory': 'Kategori',
+  'mainSubCategory': 'Underkategori',
+  'mainSubSubCategory': 'Varetype',
+  'mainCountry': 'Land',
+  'volumeRanges': 'Volum',
+  'isGoodfor': 'Passer til',
+  'Soedme': 'Sødme',
+  'Tannin(Sulfates)': 'Garvestoffer',
+  'Raastoff': 'Råstoff',
+  'Biodynamic': 'Biodynamisk',
+  'Eco': 'Økologisk',
+  'Gluten': 'Glutenfri',
+  'inStockFlag': 'På lager'
+}
+
 function Facet(facet) {
   const [title, valueFilter] = facetsMap[facet.name] || []
 
   this.title = title || facet.name
   this.name = facet.name
+  this.displayName = displayNames[facet.name] || facet.name
   this.category = facet.category
   this.multiSelect = facet.multiSelect
   this.values = facet.values.map(val =>

@@ -253,7 +253,7 @@ describe('vinmonopolet', function () {
 
     it('can use returned facets to search for products', () =>
       vinmonopolet.getFacets().then(facets => {
-        const countryFacet = facets.find(facet => facet.name === 'mainCountry')
+        const countryFacet = facets.find(facet => facet.title === 'mainCountry')
         expect(countryFacet).to.be.an.instanceOf(vinmonopolet.Facet)
 
         const norwayFacetValue = countryFacet.values.find(val => val.name === 'Norge')
