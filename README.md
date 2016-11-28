@@ -172,49 +172,49 @@ vinmonopolet
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'PRIMARY',
     url: 'https://bilder.vinmonopolet.no/cache/515x515-0/2179901-1.jpg',
-    size: {width: 515, height: 515}
+    size: {maxWidth: 515, maxHeight: 515}
   }, {
     format: 'product',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'PRIMARY',
     url: 'https://bilder.vinmonopolet.no/cache/300x300-0/2179901-1.jpg',
-    size: {width: 300, height: 300}
+    size: {maxWidth: 300, maxHeight: 300}
   }, {
     format: 'thumbnail',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'PRIMARY',
     url: 'https://bilder.vinmonopolet.no/cache/96x96-0/2179901-1.jpg',
-    size: {width: 96, height: 96}
+    size: {maxWidth: 96, maxHeight: 96}
   }, {
     format: 'cartIcon',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'PRIMARY',
     url: 'https://bilder.vinmonopolet.no/cache/65x65-0/2179901-1.jpg',
-    size: {width: 65, height: 65}
+    size: {maxWidth: 65, maxHeight: 65}
   }, {
     format: 'superZoom',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'GALLERY',
     url: 'https://bilder.vinmonopolet.no/cache/1200x1200-0/2179901-1.jpg',
-    size: {width: 1200, height: 1200}
+    size: {maxWidth: 1200, maxHeight: 1200}
   }, {
     format: 'zoom',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'GALLERY',
     url: 'https://bilder.vinmonopolet.no/cache/515x515-0/2179901-1.jpg',
-    size: {width: 515, height: 515}
+    size: {maxWidth: 515, maxHeight: 515}
   }, {
     format: 'product',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'GALLERY',
     url: 'https://bilder.vinmonopolet.no/cache/300x300-0/2179901-1.jpg',
-    size: {width: 300, height: 300}
+    size: {maxWidth: 300, maxHeight: 300}
   }, {
     format: 'thumbnail',
     description: 'Mikkeller Black Ink and Blood Imperial Raspberry Stout Brandy',
     type: 'GALLERY',
     url: 'https://bilder.vinmonopolet.no/cache/96x96-0/2179901-1.jpg',
-    size: {width: 96, height: 96}
+    size: {maxWidth: 96, maxHeight: 96}
   }],
   // EAN-13 barcode
   barcode: 5704255106825,

@@ -14,7 +14,10 @@ ProductImage.prototype.toString = function () {
 
 function guessSizeFromUrl(url) {
   const [, width, height] = (url && url.match(sizeMatcher)) || []
-  return width && height ? {width: Number(width), height: Number(height)} : null
+  return width && height ? {
+    maxWidth: Number(width),
+    maxHeight: Number(height)
+  } : null
 }
 
 module.exports = ProductImage
