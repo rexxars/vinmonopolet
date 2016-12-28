@@ -328,6 +328,17 @@ describe('vinmonopolet', function () {
     )
   })
 
+  describe('getProductsById', () => {
+    it('fetches products by id', () =>
+      vinmonopolet.getProducts({query: 'valpolicella', limit: 3})
+        .then(res => res.products.map(prod => prod.code))
+        .then(ids => vinmonopolet.getProductsById(ids))
+        .then(prods => prods.forEach(prod => {
+          expect(prod.name.toLowerCase()).to.contain('valpolicella')
+        }))
+    )
+  })
+
   describe('getProductByBarcode', () => {
     it('fetches products by barcode', () =>
       vinmonopolet.getProducts({limit: 5, facets: [vinmonopolet.Facet.Category.BEER, 'mainCountry:norge']})

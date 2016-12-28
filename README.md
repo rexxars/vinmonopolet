@@ -53,7 +53,7 @@ import {getProducts, Facet} from 'vinmonopolet'
 
 async function getAllCiders() {
   let {pagination, products} = await getProducts({facet: Facet.Category.CIDER})
-  
+
   while (pagination.hasNext) {
     const response = await pagination.next()
     products = products.concat(response.products)
@@ -89,6 +89,16 @@ vinmonopolet.getProduct('1174701').then(product => {
 })
 ```
 
+### Get an array of products by ID/code (detailed)
+
+```js
+const vinmonopolet = require('vinmonopolet')
+
+vinmonopolet.getProductsById(['1174701', '1148714']).then(product => {
+  console.log(product)
+})
+```
+
 ### Get specific product by barcode (detailed)
 
 ```js
@@ -107,7 +117,7 @@ const vinmonopolet = require('vinmonopolet')
 vinmonpolet.getFacets().then(facets => {
   const countryFacet = facets.find(facet => facet.name === 'mainCountry')
   const norwayFacetValue = countryFacet.values.find(val => val.name === 'Norge')
-  
+
   return vinmonopolet.getProducts({limit: 3, facet: norwayFacetValue})
 }).then(response => {
   console.log(response.products) // 3 products from Norway
@@ -328,7 +338,7 @@ vinmonopolet
   productSelection: 'Bestillingsutvalget',
   // Age limit to buy this product
   ageLimit: 18,
-  
+
   // Not really sure what these fields mean, but they're part of the data returned, so...
   buyable: true,
   deliveryTime: '0000030190',

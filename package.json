@@ -1,7 +1,7 @@
 {
   "name": "vinmonopolet",
   "description": "Extracts information on products, categories and stores from Vinmonopolet",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "keywords": [
     "vinmonopolet",
     "beer",
@@ -16,7 +16,8 @@
     "./lib/stream.js": "./lib/no-browser.js"
   },
   "scripts": {
-    "browserify": "NODE_ENV=production DEBUG='' browserify -t envify lib/index.js -o umd/vinmonopolet.js --standalone=Vinmonopolet",
+    "browserify": "NODE_ENV=production DEBUG='' browserify -t envify lib/index.js -o umd/vinmonopolet.es6.js --standalone=Vinmonopolet && npm run babel",
+    "babel": "babel umd/vinmonopolet.es6.js > umd/vinmonopolet.js",
     "build": "npm run clean && npm run compile && npm run browserify && npm run minify && npm run size",
     "clean": "rimraf lib coverage .nyc_output umd/*.js",
     "compile": "babel --source-maps --copy-files -d lib/ src/",
@@ -60,12 +61,12 @@
   },
   "dependencies": {
     "csv-parser": "^1.11.0",
-    "es6-promise-pool": "^2.4.4",
     "fetch-ponyfill": "^3.0.2",
     "got": "^6.6.3",
     "iconv-lite": "^0.4.13",
     "in-publish": "^2.0.0",
     "object-assign": "^4.1.0",
+    "promise-map-limit": "^1.0.0",
     "promise-props": "^1.0.0",
     "query-string": "^4.2.3",
     "split": "^1.0.0",
