@@ -2,19 +2,19 @@ const facetsMap = require('../datamaps/facetsMap')
 const FacetValue = require('./FacetValue')
 
 const displayNames = {
-  'mainCategory': 'Kategori',
-  'mainSubCategory': 'Underkategori',
-  'mainSubSubCategory': 'Varetype',
-  'mainCountry': 'Land',
-  'volumeRanges': 'Volum',
-  'isGoodfor': 'Passer til',
-  'Soedme': 'Sødme',
+  mainCategory: 'Kategori',
+  mainSubCategory: 'Underkategori',
+  mainSubSubCategory: 'Varetype',
+  mainCountry: 'Land',
+  volumeRanges: 'Volum',
+  isGoodfor: 'Passer til',
+  Soedme: 'Sødme',
   'Tannin(Sulfates)': 'Garvestoffer',
-  'Raastoff': 'Råstoff',
-  'Biodynamic': 'Biodynamisk',
-  'Eco': 'Økologisk',
-  'Gluten': 'Glutenfri',
-  'inStockFlag': 'På lager'
+  Raastoff: 'Råstoff',
+  Biodynamic: 'Biodynamisk',
+  Eco: 'Økologisk',
+  Gluten: 'Glutenfri',
+  inStockFlag: 'På lager'
 }
 
 function Facet(facet) {
