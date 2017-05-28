@@ -114,7 +114,7 @@ vinmonopolet.getProductByBarcode('5060154910315').then(product => {
 ```js
 const vinmonopolet = require('vinmonopolet')
 
-vinmonpolet.getFacets().then(facets => {
+vinmonopolet.getFacets().then(facets => {
   const countryFacet = facets.find(facet => facet.name === 'mainCountry')
   const norwayFacetValue = countryFacet.values.find(val => val.name === 'Norge')
 
