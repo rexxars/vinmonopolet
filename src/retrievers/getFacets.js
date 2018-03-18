@@ -2,8 +2,13 @@ const request = require('../util/request')
 const Facet = require('../models/Facet')
 
 function getFacets(opts) {
-  const query = {fields: 'facets'}
-  return request.get('/products/search', {query})
+  return request.get('/vmp/search/facets', {
+    baseUrl: 'https://www.vinmonopolet.no',
+    query: {
+      // 500 thrown if no "q" parameter supplied.
+      q: ''
+    }
+  })
     .then(res => res.facets.map(i => new Facet(i)))
 }
 
