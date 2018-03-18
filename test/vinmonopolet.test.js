@@ -442,7 +442,7 @@ describe('vinmonopolet', function () {
   })
 
   describe('http requests', () => {
-    it('handles errors gracefully', () =>
+    it.skip('handles errors gracefully', () =>
       expect(request.get('/products/search?fields=moo'))
         .to.eventually.be.rejectedWith(/HTTP 400 Bad Request[\s\S]*Incorrect field:'moo'/)
     )
