@@ -8,7 +8,8 @@ const baseUrl = 'https://app.vinmonopolet.no/vmpws/v2/vmp'
 function request(path, options = {}) {
   const query = options.query ? `?${qs.stringify(options.query)}` : ''
   const reqOpts = options.request || {}
-  const url = `${baseUrl}${path}${query}`
+  const base = options.baseUrl || baseUrl
+  const url = `${base}${path}${query}`
 
   return fetch(url, reqOpts)
 }
