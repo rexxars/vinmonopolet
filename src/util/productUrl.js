@@ -18,7 +18,7 @@ module.exports = (url, row) => {
   if (path.indexOf(oldUrl) === 0) {
     // Try rewriting to new format
     const namePart = enc(row.Varenavn.replace(/[.\s]/ig, '-').replace(/-{2,}/g, '-'))
-    return [baseUrl, 'vmpSite', row.Land && `Land/${enc(row.Land)}`, namePart, 'p', row.Varenummer]
+    return [baseUrl, 'vmp', row.Land && `Land/${enc(row.Land)}`, namePart, 'p', row.Varenummer]
       .filter(Boolean).join('/')
   }
 

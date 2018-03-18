@@ -3,7 +3,7 @@ const objectAssign = require('object-assign')
 const qs = require('query-string')
 const promiseProps = require('promise-props')
 
-const baseUrl = 'https://app.vinmonopolet.no/vmpws/v2/vmpSite'
+const baseUrl = 'https://app.vinmonopolet.no/vmpws/v2/vmp'
 
 function request(path, options = {}) {
   const query = options.query ? `?${qs.stringify(options.query)}` : ''
