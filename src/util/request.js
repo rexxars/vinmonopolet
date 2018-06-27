@@ -1,24 +1,24 @@
-const {fetch} = require('fetch-ponyfill')()
+const request = require('request-promise-native')
 const objectAssign = require('object-assign')
 const qs = require('query-string')
 const promiseProps = require('promise-props')
 
 const baseUrl = 'https://app.vinmonopolet.no/vmpws/v2/vmp'
 
-function request(path, options = {}) {
+function sendRequest(path, options = {}) {
   const query = options.query ? `?${qs.stringify(options.query)}` : ''
   const reqOpts = options.request || {}
   const base = options.baseUrl || baseUrl
   const url = `${base}${path}${query}`
 
-  return fetch(url, reqOpts)
+  return request(objectAssign({url, jar: true}, reqOpts))
 }
 
-request.get = (path, options) =>
-  request(path, options)
+sendRequest.get = (path, options) =>
+  sendRequest(path, objectAssign({}, options, {request: {resolveWithFullResponse: true, json: true}}))
     .then(res => promiseProps({
       response: res,
-      body: res.json()
+      body: res.body
     }))
     .then(data => {
       const {body, response} = data
@@ -29,10 +29,10 @@ request.get = (path, options) =>
       return body
     })
 
-request.head = (path, options) =>
-  request(path, objectAssign({}, options, {request: {method: 'HEAD'}}))
+sendRequest.head = (path, options) =>
+  sendRequest(path, objectAssign({}, options, {request: {resolveWithFullResponse: true, method: 'HEAD'}}))
 
-request.raw = url => fetch(url).then(res => res.text())
+sendRequest.raw = url => request(url, {jar: true})
 
 function getErrorMessage(response, body) {
   const errors = body.errors || []
@@ -46,4 +46,4 @@ function stringifyError(err) {
   return `${type}${err.message}`
 }
 
-module.exports = request
+module.exports = sendRequest
