@@ -50,7 +50,7 @@ function getProducts(opts) {
   const req = getter('/products/search', {query})
 
   if (options.onlyCount) {
-    return req.then(res => Number(res.headers.get('X-Total-Count')))
+    return req.then(res => Number(res.headers['x-total-count']))
   }
 
   return req.then(res => ({

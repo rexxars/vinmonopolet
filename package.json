@@ -60,13 +60,14 @@
   },
   "dependencies": {
     "csv-parser": "^1.12.0",
-    "fetch-ponyfill": "^4.0.0",
     "got": "^6.7.1",
     "iconv-lite": "^0.4.19",
     "object-assign": "^4.1.1",
     "promise-map-limit": "^1.0.0",
     "promise-props": "^1.0.0",
     "query-string": "^4.3.4",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5",
     "split": "^1.0.1",
     "through2": "^2.0.3"
   }
