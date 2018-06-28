@@ -2,7 +2,7 @@ const through = require('through2')
 const iconv = require('iconv-lite')
 const split = require('split')
 const csv = require('csv-parser')
-const got = require('got')
+const request = require('request')
 const csvUrls = require('./csvUrls')
 const Product = require('./models/Product')
 const Store = require('./models/Store')
@@ -11,7 +11,7 @@ const symmetricStream = require('./util/symmetric-stream')
 const csvOptions = {separator: ';'}
 
 function getCsvStream(url, transformer) {
-  return got.stream(url)
+  return request(url)
     .pipe(iconv.decodeStream('iso-8859-1'))
     .pipe(split())
     .pipe(symmetricStream())
