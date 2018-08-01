@@ -379,6 +379,22 @@ describe('vinmonopolet', function () {
     )
   })
 
+  describe('getProductsByStore', () => {
+    it('fetches products by store id', () =>
+      expect(vinmonopolet.getProductsByStore('160', {limit: 3}).then(i => i.products))
+        .to.eventually.have.length(3)
+    )
+
+    it('fetches products by store and with facet', () =>
+      vinmonopolet.getProductsByStore('160', {facet: vinmonopolet.Facet.Category.BEER})
+        .then(i => i.products)
+        .then(res => {
+          expect(res[0].chosenStoreStock.pointOfService).to.be.equal('160')
+          res.forEach(prod => expect(prod.productType).to.equal('Øl'))
+        })
+    )
+  })
+
   describe('getProductByBarcode', () => {
     it('fetches products by barcode', () =>
       vinmonopolet.getProducts({limit: 5, facets: [vinmonopolet.Facet.Category.BEER, 'mainCountry:norge']})

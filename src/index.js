@@ -18,6 +18,7 @@ module.exports = {
   searchProducts: require('./retrievers/searchProducts'),
   getProduct: require('./retrievers/getProduct'),
   getProductsById: require('./retrievers/getProductsById'),
+  getProductsByStore: require('./retrievers/getProductsByStore'),
   getProductByBarcode: require('./retrievers/getProductByBarcode'),
 
   // Stream interface
