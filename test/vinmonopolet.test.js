@@ -230,6 +230,48 @@ describe('vinmonopolet', function () {
     )
   })
 
+  describe('getStores', () => {
+    it('can get first 10 stores', () =>
+      expect(vinmonopolet.getStores().then(i => i.stores))
+        .to.eventually.have.length(10)
+    )
+
+    it('can get by location', () =>
+      vinmonopolet.getStores({
+        lat: 63.405,
+        lon: 10.402
+      })
+      .then(i => i.stores)
+      .then(res => {
+        expect(res[0].displayName).to.be.equal('Trondheim, Byåsen')
+      })
+    )
+
+    it('can get by query', () =>
+      vinmonopolet.getStores({
+        query: 'Trondheim, Bankkvartalet'
+      })
+      .then(i => i.stores)
+      .then(res => {
+        expect(res[0].displayName).to.be.equal('Trondheim, Bankkvartalet')
+        expect(res[0].name).to.be.equal('160')
+      })
+    )
+
+    it('returns pagination info', () =>
+      vinmonopolet.getStores({ }).then(res => {
+        expect(res.stores).to.be.an('array').and.have.lengthOf(10)
+        expect(res.pagination).to.be.an.instanceOf(vinmonopolet.Pagination)
+        expect(res.pagination).to.have.property('currentPage', 0)
+        expect(res.pagination).to.have.property('pageSize', 10)
+        expect(res.pagination).to.have.property('hasNext', true)
+        expect(res.pagination).to.have.property('hasPrevious', false)
+        expect(res.pagination.totalPages).to.be.a('number').and.be.above(10)
+        expect(res.pagination.totalResults).to.be.a('number').and.be.above(100)
+      })
+    )
+  })
+
   describe('getFacets', () => {
     it('can get facets list, returns promise of array', () =>
       expect(vinmonopolet.getFacets())

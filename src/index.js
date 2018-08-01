@@ -14,6 +14,7 @@ module.exports = {
   // Searchers
   getFacets: require('./retrievers/getFacets'),
   getProducts: require('./retrievers/getProducts'),
+  getStores: require('./retrievers/getStores'),
   searchProducts: require('./retrievers/searchProducts'),
   getProduct: require('./retrievers/getProduct'),
   getProductsById: require('./retrievers/getProductsById'),
