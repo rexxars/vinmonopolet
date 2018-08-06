@@ -12,9 +12,10 @@ function getStores(opts) {
     page: Math.max(0, options.page - 1)
   }
 
-  if (options.lat && options.lon) {
-    query.latitude = options.lat
-    query.longitude = options.lon
+  const {lat, lon} = options.nearLocation || {}
+  if (lat && lon) {
+    query.latitude = lat
+    query.longitude = lon
   }
 
   if (options.query) {

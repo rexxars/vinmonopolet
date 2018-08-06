@@ -238,8 +238,10 @@ describe('vinmonopolet', function () {
 
     it('can get by location', () =>
       vinmonopolet.getStores({
-        lat: 63.405,
-        lon: 10.402
+        nearLocation: {
+          lat: 63.405,
+          lon: 10.402
+        }
       })
       .then(i => i.stores)
       .then(res => {
