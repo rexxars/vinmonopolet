@@ -1,7 +1,7 @@
 {
   "name": "vinmonopolet",
   "description": "Extracts information on products, categories and stores from Vinmonopolet",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "keywords": [
     "vinmonopolet",
     "beer",
@@ -15,7 +15,6 @@
     "coverage": "nyc --reporter=html --reporter=lcov --reporter=text _mocha",
     "lint": "eslint .",
     "posttest": "npm run lint",
-    "prepublishOnly": "npm test",
     "test": "mocha --reporter spec --recursive"
   },
   "engines": {
